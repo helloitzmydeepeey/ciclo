@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_RewardPointsUltimate
+ * @copyright   Copyright (c) Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+ -->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!--=========================================== CART =================================================-->
+    <route url="/V1/mpReward/carts/mine/spending-configuration" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\CartRepositoryInterface" method="getSpendingRuleConfiguration"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+
+    <!--=========================================== INVITATIONS =================================================-->
+    <route url="/V1/mpReward/invitations" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_invitation"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/mine/invitations" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="getReferralByCustomerId"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/mpReward/mine/invite" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="invite"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/mpReward/invitation/refer" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="referByCode"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/invitation/mine/code" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="getReferCode"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/mpReward/invitations/count" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="count"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_invitation"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/invitations/invited/:email" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="getInvitedByEmail"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_invitation"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/invitations/referral/:email" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\InvitationRepositoryInterface" method="getReferralByEmail"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_invitation"/>
+        </resources>
+    </route>
+    <!--=========================================== TRANSACTIONS =================================================-->
+    <route url="/V1/mpReward/transactions" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/mine/transactions" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="getTransactionByCustomerId"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/mpReward/transactions/count" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="count"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/transactions/account/:id" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="getTransactionByAccountId"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/transactions/order/:id" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="getTransactionByOrderId"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/transactions/:id/expire" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="expire"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/transactions/:id/cancel" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="cancel"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/transactions/create" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\TransactionRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::transaction"/>
+        </resources>
+    </route>
+    <!--=========================================== REWARD CUSTOMER =================================================-->
+    <route url="/V1/mpReward/mine/subscribe" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="subscribe"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/mpReward/accounts" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::reward_points"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/mine/account" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="getAccountByCustomerId"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V1/mpReward/accounts/:id" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="getAccountById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::reward_points"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/accounts/count" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="count"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::reward_points"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/accounts/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="deleteAccountById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::reward_points"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/accounts/email" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="getAccountByEmail"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::reward_points"/>
+        </resources>
+    </route>
+    <route url="/V1/mpReward/accounts/create" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardCustomerRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::reward_points"/>
+        </resources>
+    </route>
+    <!--=========================================== REWARD RATE =================================================-->
+    <route url="/V1/mpReward/rates" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardRateRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_rate_pro" />
+            <resource ref="Mageplaza_RewardPoints::spending_rate_pro" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/rates" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardRateRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_rate_pro" />
+            <resource ref="Mageplaza_RewardPoints::spending_rate_pro" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/rate/:id" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardRateRepositoryInterface" method="getRateById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_rate_pro" />
+            <resource ref="Mageplaza_RewardPoints::spending_rate_pro" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/rates/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsUltimate\Api\RewardRateRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_rate_pro" />
+            <resource ref="Mageplaza_RewardPoints::spending_rate_pro" />
+        </resources>
+    </route>
+    <!--=========================================== CATALOG RULES =================================================-->
+    <route url="/V1/mpReward/catalog-rules" method="GET">
+        <service class="Mageplaza\RewardPointsPro\Api\CatalogRuleRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_catalog" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/catalog-rules/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsPro\Api\CatalogRuleRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_catalog" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/catalog-rules/:id" method="GET">
+        <service class="Mageplaza\RewardPointsPro\Api\CatalogRuleRepositoryInterface" method="getCatalogRuleById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_catalog" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/catalog-rules" method="POST">
+        <service class="Mageplaza\RewardPointsPro\Api\CatalogRuleRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_catalog" />
+        </resources>
+    </route>
+
+    <!--=========================================== SHOPPING CART RULES =================================================-->
+    <route url="/V1/mpReward/shopping-cart-earning-rules" method="GET">
+        <service class="Mageplaza\RewardPointsPro\Api\SCEarningRuleRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_shopping_cart" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/shopping-cart-earning-rules/:id" method="GET">
+        <service class="Mageplaza\RewardPointsPro\Api\SCEarningRuleRepositoryInterface" method="getEarningRuleById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_shopping_cart" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/shopping-cart-earning-rules/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsPro\Api\SCEarningRuleRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_shopping_cart" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/shopping-cart-earning-rules" method="POST">
+        <service class="Mageplaza\RewardPointsPro\Api\SCEarningRuleRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_shopping_cart" />
+        </resources>
+    </route>
+
+    <route url="/V1/mpReward/shopping-cart-spending-rules" method="GET">
+        <service class="Mageplaza\RewardPointsPro\Api\SCSpendingRuleRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::spending_shopping_cart" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/shopping-cart-spending-rules/:id" method="GET">
+        <service class="Mageplaza\RewardPointsPro\Api\SCSpendingRuleRepositoryInterface" method="getSpendingRuleById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::spending_shopping_cart" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/shopping-cart-spending-rules/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsPro\Api\SCSpendingRuleRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::spending_shopping_cart" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/shopping-cart-spending-rules" method="POST">
+        <service class="Mageplaza\RewardPointsPro\Api\SCSpendingRuleRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::spending_shopping_cart" />
+        </resources>
+    </route>
+
+    <!--=========================================== REFERRAL RULES =================================================-->
+    <route url="/V1/mpReward/referral-rules" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\ReferralRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_rules" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/referral-rules/:id" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\ReferralRepositoryInterface" method="getRuleById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_rules" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/referral-rules/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsUltimate\Api\ReferralRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_rules" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/referral-rules" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\ReferralRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::referral_rules" />
+        </resources>
+    </route>
+
+    <!--=========================================== BEHAVIOR RULES =================================================-->
+    <route url="/V1/mpReward/behavior-rules" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\BehaviorRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_behavior" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/behavior-rules/:id" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\BehaviorRepositoryInterface" method="getRuleById"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_behavior" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/behavior-rules/:id" method="DELETE">
+        <service class="Mageplaza\RewardPointsUltimate\Api\BehaviorRepositoryInterface" method="delete"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::earning_behavior" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/behavior-rules" method="POST">
+        <service class="Mageplaza\RewardPointsUltimate\Api\BehaviorRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="MMageplaza_RewardPoints::earning_behavior" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/behavior-rules/email-templates" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\BehaviorRepositoryInterface" method="getEmailTemplateOptions"/>
+        <resources>
+            <resource ref="MMageplaza_RewardPoints::earning_behavior" />
+        </resources>
+    </route>
+    <route url="/V1/mpReward/behavior-rules/sender-options" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\BehaviorRepositoryInterface" method="getSenderOptions"/>
+        <resources>
+            <resource ref="MMageplaza_RewardPoints::earning_behavior" />
+        </resources>
+    </route>
+
+    <!-- Store Config -->
+    <route url="/V1/mpReward/configs" method="GET">
+        <service class="Mageplaza\RewardPointsUltimate\Api\ConfigManagerInterface" method="getConfigs"/>
+        <resources>
+            <resource ref="Mageplaza_RewardPoints::configuration"/>
+        </resources>
+    </route>
+</routes>

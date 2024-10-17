@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/> <!-- Removal of add to compare-->
+    <referenceBlock name="catalogsearch.product.addto.compare" remove="true"/>   <!-- Removal of add to compare-->
+    <referenceBlock name="related.product.addto.compare" remove="true" /> <!-- Removal of add to compare-->
+    <referenceBlock name="crosssell.product.addto.compare" remove="true" /> <!-- Removal of add to compare-->
+    <referenceBlock name="upsell.product.addto.compare" remove="true" /> <!-- Removal of add to compare-->
+    <referenceBlock name="view.addto.compare" remove="true" /> <!-- Removal of add to compare-->
+    <referenceBlock name="view.addto.wishlist" remove="true" /> <!-- Removal of add to compare-->
+    <referenceBlock name="category.product.addto.compare" remove="true"/> <!-- Removal of add to compare-->
+        <referenceContainer name="header.links">
+            <block class="Magento\Framework\View\Element\Template" name="catalog.compare.link" before="top.links" template="Magento_Catalog::product/compare/link.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="compareProducts" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Catalog/js/view/compare-products</item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

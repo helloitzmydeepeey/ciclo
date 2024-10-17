@@ -1,0 +1,23 @@
+<?php foreach ($_product->getAttributes() as $_attribute): ?>
+    <?php if ($_attribute->getIsVisibleOnFront() && !$_attribute->isStatic() && $_attribute->getFrontend()->getValue($_product)): ?>
+        <?php if ($_attribute->getAttributeCode() === 'color'): ?>
+            <div class="product-attribute">
+                <strong><?php echo $_attribute->getFrontendLabel() ?></strong>
+                <span><?php echo $_attribute->getFrontend()->getValue($_product) ?></span>
+            </div>
+            <div class="product-attribute">
+                <strong>Name:</strong>
+                <span><?php echo $_product->getName() ?></span>
+            </div>
+            <div class="product-attribute">
+                <strong>ID:</strong>
+                <span><?php echo $_product->getId() ?></span>
+            </div>
+        <?php else: ?>
+            <div class="product-attribute">
+                <strong><?php echo $_attribute->getFrontendLabel() ?></strong>
+                <span><?php echo $_attribute->getFrontend()->getValue($_product) ?></span>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+<?php endforeach; ?>

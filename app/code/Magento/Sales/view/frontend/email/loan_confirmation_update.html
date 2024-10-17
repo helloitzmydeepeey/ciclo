@@ -1,0 +1,61 @@
+<!--@subject Your {{var myBranchTitle}} loan confirmation @-->
+<!--@vars {
+"var customer_name":"Customer Name",
+"var monthly_amortization":"Monthly Amortization",
+"var loan_terms":"Loan Terms",
+"var myBranchTitle":"Branch Title",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var store_hours":"Store Hours",
+"var product_image":"Product Image"
+"var product_name":"Product Name"
+"var product_price":"Product Price"
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p>Dear {{var customer_name}},</p>
+
+<p>Thank you for choosing {{var myBranchTitle}} to apply for a loan.</p>
+
+<p>We are pleased to confirm your loan application with the following details:</p>
+
+<table>
+    <tr>
+        <td><strong>Product Name</strong></td>
+        <td>{{var product_name}}</td>
+    </tr>
+    <tr>
+        <td><strong>Product Price</strong></td>
+        <td>{{var product_price}}</td>
+    </tr>
+    <tr>
+        <td><strong>Product Image</strong></td>
+        <td><img style="width:100%" src="{{media url='var product_image'}}" ></td>
+    </tr>
+    <tr>
+        <td><strong>Monthly Amortization:</strong></td>
+        <td>{{var monthly_amortization}}</td>
+    </tr>
+    <tr>
+        <td><strong>Loan Terms:</strong></td>
+        <td>{{var loan_terms}}</td>
+    </tr>
+
+</table>
+
+<p>If you have any questions or need further assistance, please don't hesitate to contact us:</p>
+<ul>
+    <li>Phone: {{var store_phone}}</li>
+    <li>Email: <a href="mailto:{{var store_email}}">{{var store_email}}</a></li>
+    {{depend store_hours}}
+    <li>Store Hours: {{var store_hours}}</li>
+    {{/depend}}
+</ul>
+
+<p>You can also check the status of your loan application by <a href="{{var this.getUrl($store,'customer/account/',[_nosid:1])}}">logging into your account</a>.</p>
+
+<p>Thank you once again for choosing {{var myBranchTitle}} for your loan needs.</p>
+
+{{template config_path="design/email/footer_template"}}

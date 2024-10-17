@@ -1,0 +1,27 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+?>
+<div class="actions">
+    <?php $_order = $block->getOrder() ?>
+    <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
+        <button type="button" class="btn btn-primary" style="background:#ec7200;">
+       <a href="#" style="margin-right:0px !important;" data-post='<?=
+        /* @noEscape */ $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+            ->getPostData($block->getReorderUrl($_order))
+        ?>' class="action order"> 
+            <span style="color:black"><?= $block->escapeHtml(__('Reorder')) ?></span>
+        </a> </button>
+    <?php endif ?>
+    <a href="<?= $block->escapeUrl($block->getPrintUrl($_order)) ?>"
+       class="action print"
+       target="_blank"
+       rel="noopener">
+        <span><?= $block->escapeHtml(__('Print Order')) ?></span>
+    </a>
+    <?= $block->getChildHtml() ?>
+</div>

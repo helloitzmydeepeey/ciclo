@@ -1,0 +1,89 @@
+<!--
+
+
+<div class="price-after-text" style="background:#272723;">
+<div class="select-downpayment">
+<span class="span-downpayment" style="color:white; margin-left: 10px;  margin-top:5px !important;"> DOWNPAYMENT: </span>
+<select style="color:black !important;" id="select-downpayments" class="select-downpayments" name="select-downpayments"  >
+<option value="" class="blank-downpayment" selected disabled> Downpayment</option>
+<option value="10" class="downpayments"> 10% Downpayment </option>
+<option value="20" class="downpayments"> 20% Downpayment  </option>
+<option value="30" class="downpayments"> 30% Downpayment </option>
+<option value="40" class="downpayments"> 40% Downpayment </option>
+<option value="50" class="downpayments"> 50% Downpayment </option>
+</select>
+
+</div>
+
+
+<br>
+<br>
+
+
+<span class="span-monthly-payment" style="margin-left: 10px;color:white;"> MONTHLY PAYMENT:</span>
+<span class="span-select-term" style="color:#FFD700 !important; margin-left: 10px;  margin-top:10px !important;">SELECT TERM   </span>
+<select style="color:black !important;" id="select-terms"  name="select-terms" >
+<option value="" class="blank-terms" selected disabled> Choose a terms</option>
+<option value="1" class="terms"> 1 Year </option>
+<option value="2" class="terms"> 2 Years </option>
+<option value="3" class="terms"> 3 Years </option>
+<option value="4" class="terms"> 4 Years </option>
+<option value="5" class="terms"> 5 Years </option>
+
+
+</select>
+
+
+
+</div> -->
+<?php
+/*
+$helper=$this->helper('Smartwave\Dailydeals\Helper\Data');
+
+$currency = $helper->getcurrencySymbol();
+*/
+?>
+<!--
+<script type="text/javascript">
+require([
+    'jquery'
+], function ($) {
+    var $x = jQuery.noConflict();
+    var $y = jQuery.noConflict();
+    var currencyValue= '<?php //echo $currency ?>';
+    $x(document).ready(function() {
+
+        //Dowpayment
+        $x("select[name=select-downpayments]").change(function() {
+            var downpayment = $('#select-downpayments').find(":selected").val();
+            var prices= $('.price-wrapper').data("price-amount");
+            var percentage= $(downpayment/100);
+            var getDownpayment =$(percentage[0] * prices)
+            var computation = $(prices-getDownpayment[0])
+            $('.price').html(currencyValue + '' + computation[0].toLocaleString('en-US') + ".00");
+            $("#select-terms").val($("#select-terms option:first").val());
+
+
+
+
+            //Terms
+            $y("select[name=select-terms]").change(function() {
+            var selectedOption = $y(this).find('option:selected');
+            var terms = $('#select-terms').find(":selected").val();
+            var termsMonth = $(terms * 12);
+            var computed=$(computation[0]/termsMonth[0]);
+            var remainder= $(prices % terms);
+            if(remainder == 0 ){
+                $('.price').html(currencyValue + '' + computed[0].toLocaleString('en-US') + ".00");
+            }else{
+                $('.price').html(currencyValue + '' + computed[0].toFixed(2).toLocaleString('en-US'));
+            }
+
+        //$x(".select-downpayment").hide('slow');
+
+            });
+        });
+    });
+});
+</script>
+-->
