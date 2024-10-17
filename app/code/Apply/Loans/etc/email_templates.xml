@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="loan_emails_loans_confirmation_template_loans" label="Loan Confirmation" file="loan_confirmation.html" type="html" module="Apply_Loans" area="frontend"/>
+    <template id="loan_emails_loans_canceled_template_loans_canceled" label="Loan Canceled" file="loan_canceled.html" type="html" module="Apply_Loans" area="frontend"/>
+    <template id="loan_emails_loans_canceled_template_loans_admin_canceled" label="Loan Admin Canceled" file="loan_adminhtml_canceled.html" type="html" module="Apply_Loans" area="adminhtml" />
+    <template id="loan_emails_loans_admin_processing_template_loans_admin_processing" label="Loan Admin Processing" file="loan_adminhtml_processing.html" type="html" module="Apply_Loans" area="adminhtml" />
+    <template id="loan_emails_loans_admin_rejected_template_loans_admin_rejected" label="Loan Admin Rejected" file="loan_adminhtml_rejected.html" type="html" module="Apply_Loans" area="adminhtml" />
+    <template id="loan_emails_loans_admin_approved_template_loans_admin_approved" label="Loan Admin Approved" file="loan_adminhtml_approved.html" type="html" module="Apply_Loans" area="adminhtml" />
+</config>

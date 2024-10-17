@@ -1,0 +1,246 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+
+/** @var Customer\NewAttribute\Block\Dropdown $block */
+$clientComakerAddressCurrentBlockNumber = $block->getComakerAddressCurrentBlockNumber();
+$clientComakerAddressCurrentStreet = $block->getComakerAddressCurrentStreet();
+$clientComakerAddressCurrentProvince = $block->getComakerAddressCurrentProvince();
+$clientComakerAddressCurrentCity = $block->getComakerAddressCurrentCity();
+$clientComakerAddressCurrentBarangay = $block->getComakerAddressCurrentBarangay();
+$clientComakerAddressCurrentDurationOptions = $block->getComakerAddressCurrentDurationOptions();
+$clientComakerAddressCurrentDurationValue = $block->getComakerAddressCurrentDurationValue();
+$clientComakerAddressCurrentTypeOptions = $block->getComakerAddressCurrentTypeOptions();
+$clientComakerAddressCurrentTypeValue = $block->getComakerAddressCurrentTypeValue();
+
+
+
+
+$cityModel = $block->getLayout()->createBlock(\Customer\Dropdown\Block\CityDropdown::class);
+$provinceModel = $block->getLayout()->createBlock(\Customer\Dropdown\Block\ProvinceDropdown::class);
+$barangayModel = $block->getLayout()->createBlock(\Customer\Dropdown\Block\BarangayDropdown::class);
+?>
+
+<style>
+.field {
+        margin-bottom: 2em;
+}
+.asterisk {
+        color: red;
+
+}
+span{
+    font-weight:600;
+}
+
+</style>
+
+
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <form action="<?= $block->getUrl('client/comakeradd/save') ?>" method="post" class="form form-edit-account">
+        <?= $block->getBlockHtml('formkey') ?>
+        <legend class="legend" style="padding:0;border:0;color:#ec7200;text-transform:uppercase;margin:0 0 20px;font-size:16px;font-weight:400;"><span>Comaker Address</span></legend>
+
+        <div class="field comaker_address_current_block_number required">
+            <label class="label" for="comaker_address_current_block_number">
+                <span><?= /* @noEscape */ __('Comaker Address Block Number'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_address_current_block_number" id="comaker_address_current_block_number" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerAddressCurrentBlockNumber ?: '' ?>" required>
+            </div>
+        </div>
+
+        <div class="field comaker_address_current_street required">
+            <label class="label" for="comaker_address_current_street">
+                <span><?= /* @noEscape */ __('Comaker Street'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_address_current_street" id="comaker_address_current_street" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerAddressCurrentStreet ?: '' ?>" required>
+            </div>
+        </div>
+
+        <div class="field provincedrop required">
+            <label class="label" for="provincedrop">
+                <span><?= /* @noEscape */ __('Comaker Province'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="hidden" name="comaker_address_current_province" id="comaker_address_current_province" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerAddressCurrentProvince ?: '' ?>" >
+                 <!-- Dropdown Region -->
+                <select name="provincedrop" id="provincedrop" class="your-class-name" onchange="ProvinceDrop(this)" required>
+                  <option value=" " disabled selected>Please Select Region</option>
+                     <?php foreach ($provinceModel->getProvinceOptions() as $option): ?>
+                         <?php $subRegionIdAttribute = $clientComakerAddressCurrentProvince; ?>
+                         <?php if ($subRegionIdAttribute === null): ?>
+                             <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                             <option value="<?= $option['value'] ?>" <?php if ($this->escapeHtmlAttr($option['value']) == ""): ?>selected<?php endif; ?>><?= $option['label'] ?></option>
+                             <?php endif; ?>
+                         <?php else: ?>
+                            <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                             <option value="<?= $option['value'] ?>" <?php if ($this->escapeHtmlAttr($option['value']) ==  $subRegionIdAttribute): ?>selected<?php endif; ?>><?= $option['label'] ?></option>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                     <?php endforeach; ?>
+                 </select>
+            </div>
+        </div>
+
+
+        <div class="field citydrop required">
+            <label class="label" for="citydrop">
+                <span><?= /* @noEscape */ __('Comaker City'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <!-- Dropdown City -->
+                <input type="hidden" name="comaker_address_current_city" id="comaker_address_current_city" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerAddressCurrentCity ?: '' ?>" >
+                <select name="citydrop" id="citydrop" class="your-class-name" onchange="CityDrop(this)" required>
+                <option value= " " disabled selected>Please Select City</option>
+                    <?php foreach ($cityModel->getCityOptions() as $option): ?>
+                        <?php $subCityIdAttribute = $clientComakerAddressCurrentCity; ?>
+                        <?php if ($subCityIdAttribute === null): ?>
+                            <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                        <option  data-citymappingid="<?= $option['citymappingid'] ?>" value="<?= $option['value'] ?>" <?php if ($this->escapeHtmlAttr($option['value']) == ""): ?>selected<?php endif; ?>><?= $option['label'] ?></option>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <option  data-citymappingid="<?= $option['citymappingid'] ?>" value="<?= $option['value'] ?>" <?php if ($this->escapeHtmlAttr($option['value']) ==  $clientComakerAddressCurrentCity): ?>selected<?php endif; ?>><?= $option['label'] ?></option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="field barangaydrop required">
+            <label class="label" for="barangaydrop">
+                <span><?= /* @noEscape */ __('Comaker Barangay'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <div id="loader" style="display: none;">Loading...</div>
+                <!-- Dropdown Barangay -->
+                <input type="hidden" name="comaker_address_current_barangay" id="comaker_address_current_barangay" value="<?= $clientComakerAddressCurrentBarangay ?: '' ?>">
+                <select name="barangaydrop" id="barangaydrop" class="your-class-name" onchange="BarangayDrop(this)" required>
+                    <option value="" disabled selected>Please Select Barangay</option>
+                    <?php
+                    if($clientComakerAddressCurrentCity!=NULL){
+                        $barangayCont = $clientComakerAddressCurrentCity;
+                        echo $barangayCont;
+                    }else{
+                        $barangayCont="";
+                    }
+
+                     ?>
+                    <?php foreach ($barangayModel->getBarangayPersonalOptions($barangayCont) as $option): ?>
+                            <?php $subBarangayIdAttribute = $clientComakerAddressCurrentBarangay; ?>
+                        <?php if ($subBarangayIdAttribute === null): ?>
+                            <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                                <option   option value="<?= $option['value'] ?>" <?php if ($option['value'] == $subBarangayIdAttribute): ?>selected<?php endif; ?>><?= $this->escapeHtml($option['label']) ?></option>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                                <option value="<?= $option['value'] ?>" <?php if ($option['value'] == $subBarangayIdAttribute): ?>selected<?php endif; ?>><?= $this->escapeHtml($option['label']) ?></option>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="field comaker_address_current_duration required">
+            <label class="label" for="comaker_address_current_duration">
+                <span><?= /* @noEscape */ __('Comaker Address Duration'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <select name="comaker_address_current_duration" id="comaker_address_current_duration" required>
+                    <option value="" disabled selected>Please Select Comaker Address Duration</option>
+                    <?php foreach ($clientComakerAddressCurrentDurationOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>" <?= $option['value'] == $clientComakerAddressCurrentDurationValue ? 'selected' : '' ?>>
+                                <?= $option['label'] ?>
+                            </option>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="field comaker_address_current_type required">
+            <label class="label" for="comaker_address_current_type">
+                <span><?= /* @noEscape */ __('Comaker Address Type'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <select name="comaker_address_current_type" id="comaker_address_current_type" required>
+                    <option value="" disabled>Please Select Comaker Address Type</option>
+                    <?php foreach ($clientComakerAddressCurrentTypeOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>" <?= $option['value'] == $clientComakerAddressCurrentTypeValue ? 'selected' : '' ?>>
+                                <?= $option['label'] ?>
+                            </option>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+
+        <button type="submit">Save</button>
+
+    </form>
+
+
+
+    <!--Script Province Manipulation -->
+<script>
+   function ProvinceDrop(element) {
+    var selectedProvinceId = element.value;
+    document.getElementById("comaker_address_current_province").value = selectedProvinceId;
+
+    var cityDrop = document.getElementById("citydrop");
+    var cities = cityDrop.getElementsByTagName("option");
+
+    // Hide all cities initially
+    for (var i = 0; i < cities.length; i++) {
+        cities[i].style.display = "none";
+    }
+
+    // Show cities that correspond to the selected province
+    for (var i = 0; i < cities.length; i++) {
+        var cityMappingId = cities[i].getAttribute("data-citymappingid");
+        if (cityMappingId == selectedProvinceId) {
+            cities[i].style.display = "block";
+        }
+    }
+}
+
+
+
+
+
+
+function CityDrop(element) {
+    var selectedCityId = element.value;
+    var selectedCityText = element.options[element.selectedIndex].text;
+    document.getElementById("comaker_address_current_city").value = selectedCityId;
+}
+// Trigger the initial change event to populate cities based on the initial province selection
+ProvinceDrop(document.getElementById("provincedrop"));
+// Trigger the initial change event to populate cities based on the initial city selection
+CityDrop(document.getElementById("citydrop"));
+
+
+
+
+function BarangayDrop(sel) {
+       var selValue = sel.value;
+       var selText = sel.options[sel.selectedIndex].text;
+       document.getElementById("comaker_address_current_barangay").value = selValue;
+   }
+</script>
+
+
+<?php endif; ?>

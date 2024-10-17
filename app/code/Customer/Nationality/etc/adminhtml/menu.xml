@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+       <add id="Customer_Nationality::nationality" title="Nationality" module="Customer_Nationality" sortOrder="10" parent="Customer_Province::province_head" action="nationalities/nationalities" resource="Customer_Nationality::nationality" />
+    </menu>
+</config>

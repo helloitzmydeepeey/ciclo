@@ -1,0 +1,81 @@
+
+<?php
+/** @var \Magento\Customer\Model\Session $customerSession */
+$customerSession = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Customer\Model\Session::class);
+?>
+
+<style>
+.form.create.account.form-create-account .field.field-name-suffix{
+    position:relative;
+    bottom:17px;
+}
+/* Style the dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style the button that serves as the dropdown trigger */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style the dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 200;
+}
+
+/* Style the links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show the dropdown content when the dropdown is hovered over */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+</style>
+
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <span class="separator"></span>
+    <div class="dropdown">
+    <button class="dropbtn">
+        <span class="customer-name"><?php echo $block->escapeHtml($customerSession->getCustomer()->getName()) ?></span>
+        <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+        <a href="<?php echo $block->getUrl('customer/account/index') ?>">My Account</a>
+        <a href="<?php echo $block->getUrl('customer/account/logout') ?>">Logout</a>
+    </div>
+</div>
+<?php else: ?>
+    <span class="separator"></span>
+    <!--<a href="<?php //echo $block->getUrl('customer/account/login') ?>" id="login-link">Login</a>
+    <a href="<?php //echo $block->getUrl('customer/account/create') ?>" id="register-link">Register</a> -->
+    <a href="#" id="login-link">Login</a>
+    <a href="#" id="register-link">Register</a>
+<?php endif; ?>
+<span class="separator"></span>
+
+

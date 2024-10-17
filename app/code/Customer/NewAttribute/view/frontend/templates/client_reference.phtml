@@ -1,0 +1,231 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+
+/** @var Customer\NewAttribute\Block\Dropdown $block */
+
+//First
+$ClientCharacterReferenceRelationshipOptions = $block->getClientCharacterReferenceRelationshipOptions();
+$ClientCharacterReferenceRelationshipValue = $block->getClientCharacterReferenceRelationshipValue();
+$clientCharacterReferenceName = $block->getClientCharacterReferenceName();
+$clientCharacterReferenceContact = $block->getClientCharacterReferenceContact();
+
+//Secondary
+$ClientSecondCharacterReferenceRelationshipOptions = $block->getClientSecondCharacterReferenceRelationshipOptions();
+$ClientSecondCharacterReferenceRelationshipValue = $block->getClientSecondCharacterReferenceRelationshipValue();
+$clientSecondCharacterReferenceName = $block->getClientSecondCharacterReferenceName();
+$clientSecondCharacterReferenceContact = $block->getSecondClientCharacterReferenceContact();
+
+
+//Third
+$ClientThirdCharacterReferenceRelationshipOptions = $block->getClientThirdCharacterReferenceRelationshipOptions();
+$ClientThirdCharacterReferenceRelationshipValue = $block->getClientThirdCharacterReferenceRelationshipValue();
+$clientThirdCharacterReferenceName = $block->getClientThirdCharacterReferenceName();
+$clientThirdCharacterReferenceContact = $block->getThirdClientCharacterReferenceContact();
+
+
+?>
+<style>
+.field {
+        margin-bottom: 2em;
+}
+.asterisk {
+        color: red;
+
+}
+span{
+    font-weight:600;
+}
+</style>
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <form action="<?= $block->getUrl('client/reference/save') ?>" method="post" class="form form-edit-account">
+        <?= $block->getBlockHtml('formkey') ?>
+        <legend class="legend" style="padding:0;border:0;color:#ec7200;text-transform:uppercase;margin:0 0 20px;font-size:16px;font-weight:400;"><span>Character Reference</span></legend>
+
+        <fieldset>
+        <legend style="border-radius: 50%;border: 5px solid #ec7200;height: 40px;width: 40px;display: flex;align-items: center;justify-content: center;background: #ec7200;color: #fff;">1</legend>
+        <div class="field client_character_reference_name required">
+            <label class="label" for="client_character_reference_name">
+                <span><?= __('Character Reference Full Name'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_character_reference_name" id="client_character_reference_name" oninput="this.value = this.value.toUpperCase();" value="<?= $clientCharacterReferenceName ?: '' ?>" required>
+
+            </div>
+        </div>
+
+        <div class="field client_character_reference_relationship required">
+            <label class="label" for="client_character_reference_relationship">
+                <span><?= __('Character Reference Relationship'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <select name="client_character_reference_relationship" id="client_character_reference_relationship">
+                    <option value="" disabled selected>Please Select Character Reference Relationship</option>
+                    <?php foreach ($ClientCharacterReferenceRelationshipOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>" <?= $option['value'] == $ClientCharacterReferenceRelationshipValue ? 'selected' : '' ?>>
+                                <?= $option['label'] ?>
+                            </option>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="field client_character_reference_contact required">
+            <label class="label" for="client_character_reference_contact">
+                <span><?= __('Character Reference Contact'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_character_reference_contact" id="client_character_reference_contact" value="<?= $clientCharacterReferenceContact ?: '' ?>" required>
+            </div>
+        </div>
+    </fieldset>
+     <br>
+    <fieldset>
+        <legend style="border-radius: 50%;border: 5px solid #ec7200;height: 40px;width: 40px;display: flex;align-items: center;justify-content: center;background: #ec7200;color: #fff;">2</legend>
+
+        <div class="field client_second_character_reference_name required">
+            <label class="label" for="client_second_character_reference_name">
+                <span><?= __('Second Character Reference Full Name'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_second_character_reference_name" id="client_second_character_reference_name" oninput="this.value = this.value.toUpperCase();" value="<?= $clientSecondCharacterReferenceName ?: '' ?>" required>
+
+            </div>
+        </div>
+
+        <div class="field client_second_character_reference_relationship required">
+            <label class="label" for="client_second_character_reference_relationship">
+                <span><?= __('Second Character Reference Relationship'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <select name="client_second_character_reference_relationship" id="client_second_character_reference_relationship">
+                    <option value="" disabled selected>Please Select Character Reference Relationship</option>
+                    <?php foreach ($ClientSecondCharacterReferenceRelationshipOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                        <option value="<?= $option['value'] ?>" <?= $option['value'] == $ClientSecondCharacterReferenceRelationshipValue ? 'selected' : '' ?>>
+                            <?= $option['label'] ?>
+                        </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="field client_second_character_reference_contact required">
+            <label class="label" for="client_second_character_reference_contact">
+                <span><?= __('Second Character Reference Contact'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_second_character_reference_contact" id="client_second_character_reference_contact" value="<?= $clientSecondCharacterReferenceContact ?: '' ?>" required>
+            </div>
+        </div>
+
+        </fieldset>
+
+        <br>
+
+        <fieldset>
+        <legend style="border-radius: 50%;border: 5px solid #ec7200;height: 40px;width: 40px;display: flex;align-items: center;justify-content: center;background: #ec7200;color: #fff;">3</legend>
+        <div class="field client_third_character_reference_name required">
+            <label class="label" for="client_third_character_reference_name">
+                <span><?= __('Third Character Reference Full Name'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_third_character_reference_name" id="client_third_character_reference_name" oninput="this.value = this.value.toUpperCase();" value="<?= $clientThirdCharacterReferenceName ?: '' ?>" required>
+
+            </div>
+        </div>
+
+        <div class="field client_third_character_reference_relationship required">
+            <label class="label" for="client_third_character_reference_relationship">
+                <span><?= __('Third Character Reference Relationship'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <select name="client_third_character_reference_relationship" id="client_third_character_reference_relationship">
+                    <option value="" disabled selected>Please Select Character Reference Relationship</option>
+                    <?php foreach ($ClientThirdCharacterReferenceRelationshipOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                        <option value="<?= $option['value'] ?>" <?= $option['value'] == $ClientThirdCharacterReferenceRelationshipValue ? 'selected' : '' ?> required>
+                            <?= $option['label'] ?>
+                        </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="field client_third_character_reference_contact required">
+            <label class="label" for="client_third_character_reference_contact">
+                <span><?= __('Third Character Reference Contact'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_third_character_reference_contact" id="client_third_character_reference_contact" value="<?= $clientThirdCharacterReferenceContact ?: '' ?>" required>
+            </div>
+        </div>
+        </fieldset>
+
+        <br>
+        <button type="submit">Save</button>
+
+
+    </form>
+
+<script>
+    var contactNumberInput = document.getElementById("client_character_reference_contact");
+    var contactNumberSecondInput = document.getElementById("client_second_character_reference_contact");
+    var contactNumberThirdInput = document.getElementById("client_third_character_reference_contact");
+
+    contactNumberInput.addEventListener("input", function() {
+        var value = contactNumberInput.value;
+        if (value.length > 11) {
+            contactNumberInput.value = value.slice(0, 11);
+        }
+        if (!/^09\d{0,9}$/.test(contactNumberInput.value)) {
+            contactNumberInput.setCustomValidity("Please input correct mobile number must be 11 digits!");
+        } else {
+            contactNumberInput.setCustomValidity("");
+        }
+    });
+
+    contactNumberSecondInput.addEventListener("input", function() {
+        var value = contactNumberSecondInput.value;
+        if (value.length > 11) {
+            contactNumberSecondInput.value = value.slice(0, 11);
+        }
+        if (!/^09\d{0,9}$/.test(contactNumberSecondInput.value)) {
+            contactNumberSecondInput.setCustomValidity("Please input correct mobile number must be 11 digits!");
+        } else {
+            contactNumberSecondInput.setCustomValidity("");
+        }
+    });
+
+    contactNumberThirdInput.addEventListener("input", function() {
+        var value = contactNumberThirdInput.value;
+        if (value.length > 11) {
+            contactNumberThirdInput.value = value.slice(0, 11);
+        }
+        if (!/^09\d{0,9}$/.test(contactNumberThirdInput.value)) {
+            contactNumberThirdInput.setCustomValidity("Please input correct mobile number must be 11 digits!");
+        } else {
+            contactNumberThirdInput.setCustomValidity("");
+        }
+    });
+</script>
+
+
+<?php endif; ?>

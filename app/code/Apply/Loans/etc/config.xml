@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <loan_extensions>
+            <loan_api_token_settings>
+                <token_url>https://mc-uatloan-api.suertemotoplaza.com/GetToken/generateToken.php</token_url>
+                <token_api_username>UAT_TESTER</token_api_username>
+                <token_api_password>2jblA^qD5</token_api_password>
+            </loan_api_token_settings>
+            <loan_send_api_request>
+                <loan_request_url>https://mc-uatloan-api.suertemotoplaza.com/ApplicationV3/ApplicationUrl.php</loan_request_url>
+            </loan_send_api_request>
+             </loan_extensions>
+            <loan_emails>
+                <loans_confirmation>
+                    <enabled_loans>1</enabled_loans>
+                    <template_loans>loan_email_loans_template_loans</template_loans>
+                    <identity_loans>loans_confirmation</identity_loans>
+                    <copy_method_loans>bcc</copy_method_loans>
+                </loans_confirmation>
+                <loans_canceled>
+                    <enabled_loans_canceled>1</enabled_loans_canceled>
+                    <template_loans_canceled>loan_email_loans_canceled_template_loans_canceled</template_loans_canceled>
+                     <template_loans_admin_canceled>loan_email_loans_canceled_template_loans_admin_canceled</template_loans_admin_canceled>
+                    <identity_loans_canceled>loans_canceled</identity_loans_canceled>
+                    <copy_method_loans_canceled>bcc</copy_method_loans_canceled>
+                </loans_canceled>
+                 <loans_admin_processing>
+                    <enabled_loans_admin_processing>1</enabled_loans_admin_processing>
+                    <template_loans_admin_processing>loan_email_loans_processing_template_loans_processing</template_loans_admin_processing>
+                    <identity_loans_admin_processing>loans_processing</identity_loans_admin_processing>
+                    <copy_method_loans_admin_processing>bcc</copy_method_loans_admin_processing>
+                </loans_admin_processing>
+                <loans_admin_rejected>
+                    <enabled_loans_admin_rejected>1</enabled_loans_admin_rejected>
+                    <template_loans_admin_rejected>loan_email_loans_rejected_template_loans_rejected</template_loans_admin_rejected>
+                    <identity_loans_admin_rejected>loans_rejected</identity_loans_admin_rejected>
+                    <copy_method_loans_admin_rejected>bcc</copy_method_loans_admin_rejected>
+                </loans_admin_rejected>
+                <loans_admin_approved>
+                    <enabled_loans_admin_approved>1</enabled_loans_admin_approved>
+                    <template_loans_admin_approved>loan_email_loans_approved_template_loans_approved</template_loans_admin_approved>
+                    <identity_loans_admin_approved>loans_approved</identity_loans_admin_approved>
+                    <copy_method_loans_admin_approved>bcc</copy_method_loans_admin_approved>
+                </loans_admin_approved>
+            </loan_emails>
+
+    </default>
+</config>

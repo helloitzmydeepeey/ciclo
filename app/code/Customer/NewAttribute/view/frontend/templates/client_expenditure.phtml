@@ -1,0 +1,231 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+
+/** @var Customer\NewAttribute\Block\Dropdown $block */
+
+
+$clientFamilyExpenditureFood = $block->getClientFamilyExpenditureFood();
+$clientFamilyExpenditureEducationAllowance = $block->getClientFamilyExpenditureEducationAllowance();
+$clientFamilyExpenditureEducationTuitionFeePublic = $block->getClientFamilyExpenditureEducationTuitionFeePublic();
+$clientFamilyExpenditureEducationTuitionFeePrivate = $block->getClientFamilyExpenditureEducationTuitionFeePrivate();
+$clientFamilyExpenditureElectricity = $block->getClientFamilyExpenditureElectricity();
+$clientFamilyExpenditureWater = $block->getClientFamilyExpenditureWater();
+$clientFamilyExpenditureElectronicLoad = $block->getClientFamilyExpenditureElectronicLoad();
+$clientFamilyExpenditureCableTelevision = $block->getClientFamilyExpenditureCableTelevision();
+$clientFamilyExpenditureInternet = $block->getClientFamilyExpenditureInternet();
+$clientFamilyExpenditureTransporation = $block->getClientFamilyExpenditureTransporation();
+$clientFamilyExpenditureMedical = $block->getClientFamilyExpenditureMedical();
+$clientFamilyExpenditureExistingObligation = $block->getClientFamilyExpenditureExistingObligation();
+$clientFamilyExpenditureMiscellaneous = $block->getClientFamilyExpenditureMiscellaneous();
+$clientFamilyExpenditureHouseRent = $block->getClientFamilyExpenditureHouseRent();
+/*$clientFamilyExpenditureUtilities = $block->getClientFamilyExpenditureUtilities();
+$clientFamilyExpenditureOthers = $block->getClientFamilyExpenditureOthers(); */
+?>
+
+
+<style>
+.field {
+    margin-bottom: 2em;
+}
+
+.asterisk {
+    color: red;
+}
+span{
+    font-weight:600;
+}
+</style>
+
+
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <form action="<?= $block->getUrl('client/expenditure/save') ?>" method="post" class="form form-edit-account">
+        <?= $block->getBlockHtml('formkey') ?>
+        <legend class="legend" style="padding:0;border:0;color:#ec7200;text-transform:uppercase;margin:0 0 20px;font-size:16px;font-weight:400;"><span>Family Expenditure</span></legend>
+
+
+
+        <div class="field client_family_expenditure_food required">
+            <label class="label" for="client_family_expenditure_food">
+                <span><?= __('Food Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_food" id="client_family_expenditure_food" value="<?= $clientFamilyExpenditureFood  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_education_allowance required">
+            <label class="label" for="client_family_expenditure_education_allowance">
+                <span><?= __('Education Allowance'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_education_allowance" id="client_family_expenditure_education_allowance" value="<?= $clientFamilyExpenditureEducationAllowance  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_education_tuition_fee_public required">
+            <label class="label" for="client_family_expenditure_education_tuition_fee_public">
+                <span><?= __('Education Tuition Fee Public'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_education_tuition_fee_public" id="client_family_expenditure_education_tuition_fee_public" value="<?= $clientFamilyExpenditureEducationTuitionFeePublic  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_education_tuition_fee_private required">
+            <label class="label" for="client_family_expenditure_education_tuition_fee_private">
+                <span><?= __('Education Tuition Fee Private'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_education_tuition_fee_private" id="client_family_expenditure_education_tuition_fee_private" value="<?= $clientFamilyExpenditureEducationTuitionFeePrivate  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_electricity required">
+            <label class="label" for="client_family_expenditure_electricity">
+                <span><?= __('Electricity Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_electricity" id="client_family_expenditure_electricity" value="<?= $clientFamilyExpenditureElectricity  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_water required">
+            <label class="label" for="client_family_expenditure_water">
+                <span><?= __('Water Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_water" id="client_family_expenditure_water" value="<?= $clientFamilyExpenditureWater  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_electronic_load required">
+            <label class="label" for="client_family_expenditure_electronic_load">
+                <span><?= __('Electronic Load Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_electronic_load" id="client_family_expenditure_electronic_load" value="<?= $clientFamilyExpenditureElectronicLoad  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_cable_television required">
+            <label class="label" for="client_family_expenditure_cable_television">
+                <span><?= __('Cable Television Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_cable_television" id="client_family_expenditure_cable_television" value="<?= $clientFamilyExpenditureCableTelevision  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_internet required">
+            <label class="label" for="client_family_expenditure_internet">
+                <span><?= __('Internet Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_internet" id="client_family_expenditure_internet" value="<?= $clientFamilyExpenditureInternet  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_transportation required">
+            <label class="label" for="client_family_expenditure_transportation">
+                <span><?= __('Transportation Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_transportation" id="client_family_expenditure_transportation" value="<?= $clientFamilyExpenditureTransporation ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_medical required">
+            <label class="label" for="client_family_expenditure_medical">
+                <span><?= __('Medical Expenses'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_medical" id="client_family_expenditure_medical" value="<?= $clientFamilyExpenditureMedical ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_existing_obligation required">
+            <label class="label" for="client_family_expenditure_existing_obligation">
+                <span><?= __('Existing Obligation'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_existing_obligation" id="client_family_expenditure_existing_obligation" value="<?= $clientFamilyExpenditureExistingObligation  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_miscellaneous required">
+            <label class="label" for="client_family_expenditure_miscellaneous">
+                <span><?= __('Miscellaneous'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_miscellaneous" id="client_family_expenditure_miscellaneous" value="<?= $clientFamilyExpenditureMiscellaneous  ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_house_rent required">
+            <label class="label" for="client_family_expenditure_house_rent">
+                <span><?= __('House Rent'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_house_rent" id="client_family_expenditure_house_rent" value="<?= $clientFamilyExpenditureHouseRent ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+       <!-- <div class="field client_family_expenditure_utilities required">
+            <label class="label" for="client_family_expenditure_utilities">
+                <span><= __('Utilities'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_utilities" id="client_family_expenditure_utilities" value="?= $clientFamilyExpenditureUtilities ?>" required pattern="[0-9]*">
+            </div>
+        </div>
+
+
+        <div class="field client_family_expenditure_others required">
+            <label class="label" for="client_family_expenditure_others">
+                <span>= __('Others'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_family_expenditure_others" id="client_family_expenditure_others" value="<= $clientFamilyExpenditureOthers ?>" required pattern="[0-9]*">
+                <span style="color:red;"> Please put 0 if none. </span>
+            </div>
+        </div> -->
+
+
+
+        <button type="submit">Save</button>
+
+
+    </form>
+<?php endif; ?>

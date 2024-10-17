@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Customer::customer">
+                    <resource id="Customer_Province::customer_head" title="Customer Province" sortOrder="100" >
+                        <resource id="Customer_Province::province" title="Province" sortOrder="10">
+                            <resource id="Customer_Province::province_save" title="Save Province" sortOrder="10" />
+                            <resource id="Customer_Province::province_delete" title="Delete Province" sortOrder="20" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

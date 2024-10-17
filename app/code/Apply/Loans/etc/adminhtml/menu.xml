@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Apply_Loans::loan_head" title="Apply Loan" module="Apply_Loans" sortOrder="100" parent="Magento_Sales::sales" resource="Apply_Loans::loan_head" />
+        <add id="Apply_Loans::loans" title="Loans" module="Apply_Loans" sortOrder="10" parent="Apply_Loans::loan_head" action="loans/loans" resource="Apply_Loans::loan" />
+    </menu>
+</config>

@@ -1,0 +1,128 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+
+/** @var Customer\NewAttribute\Block\Dropdown $block */
+$clientComakerPersonalInfoFirstName = $block->getComakerPersonalInfoFirstName();
+$clientComakerPersonalInfoLastName= $block->getComakerPersonalInfoLastName();
+$clientComakerPersonalInfoMiddleName= $block->getComakerPersonalInfoMiddleName();
+$clientComakerPersonalInfoMobileNumber= $block->getComakerPersonalInfoMobileNumber();
+$clientComakerPersonalInfoOccupation= $block->getComakerPersonalInfoOccupation();
+$clientComakerPersonalInfoSuffixName= $block->getComakerPersonalInfoSuffixName();
+?>
+<style>
+.field {
+        margin-bottom: 2em;
+}
+.asterisk {
+        color: red;
+
+}
+span{
+    font-weight:600;
+}
+</style>
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <form action="<?= $block->getUrl('client/comakerinfo/save') ?>" method="post" class="form form-edit-account">
+        <?= $block->getBlockHtml('formkey') ?>
+        <legend class="legend" style="padding:0;border:0;color:#ec7200;text-transform:uppercase;margin:0 0 20px;font-size:16px;font-weight:400;"><span>Comaker Comaker Address</span></legend>
+
+
+        <div class="field comaker_personal_info_first_name required">
+            <label class="label" for="comaker_personal_info_first_name">
+                <span><?= /* @noEscape */ __('Comaker First Name'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_personal_info_first_name" id="comaker_personal_info_first_name" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerPersonalInfoFirstName ?: '' ?>" required>
+            </div>
+        </div>
+
+
+        <div class="field comaker_personal_info_last_name required">
+            <label class="label" for="comaker_personal_info_last_name">
+                <span><?= /* @noEscape */ __('Comaker Last Name'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_personal_info_last_name" id="comaker_personal_info_last_name" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerPersonalInfoLastName ?: '' ?>" required>
+            </div>
+        </div>
+
+
+        <div class="field comaker_personal_info_middle_name required">
+            <label class="label" for="comaker_personal_info_middle_name">
+                <span><?= /* @noEscape */ __('Comaker Middle Name'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_personal_info_middle_name" id="comaker_personal_info_middle_name" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerPersonalInfoMiddleName ?: '' ?>" required>
+            </div>
+        </div>
+
+        <div class="field comaker_personal_info_mobile_number required">
+            <label class="label" for="comaker_personal_info_mobile_number">
+                <span><?= /* @noEscape */ __('Comaker Contact Number'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="number" name="comaker_personal_info_mobile_number" id="comaker_personal_info_mobile_number" value="<?= $clientComakerPersonalInfoMobileNumber ?: '' ?>" required>
+            </div>
+        </div>
+
+
+        <div class="field comaker_personal_info_occupation required">
+            <label class="label" for="comaker_personal_info_occupation">
+                <span><?= /* @noEscape */ __('Comaker Occupation'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_personal_info_occupation" id="comaker_personal_info_occupation" oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerPersonalInfoOccupation ?: '' ?>" required>
+            </div>
+        </div>
+
+
+        <div class="field comaker_personal_info_suffix_name">
+            <label class="label" for="comaker_personal_info_suffix_name">
+                <span><?= /* @noEscape */ __('Comaker Suffix Name'); ?></span>
+            </label>
+            <div class="control">
+                <input type="text" name="comaker_personal_info_suffix_name" id="comaker_personal_info_suffix_name"  oninput="this.value = this.value.toUpperCase();" value="<?= $clientComakerPersonalInfoOccupation ?: '' ?>">
+                <p style="color:red;font-weight:700px;"> Please Put N/A If None </p>
+            </div>
+        </div>
+
+
+<button type="submit">Save</button>
+
+    </form>
+
+<script>
+   var contactNumberInput = document.getElementById("comaker_personal_info_mobile_number");
+    contactNumberInput.addEventListener("input", function() {
+        var value = contactNumberInput.value;
+        if (value.length > 11) {
+            contactNumberInput.value = value.slice(0, 11);
+        }
+        if (!/^09\d{0,9}$/.test(contactNumberInput.value)) {
+            contactNumberInput.setCustomValidity("Please input correct mobile number must be 11 digits!");
+        } else {
+            contactNumberInput.setCustomValidity("");
+        }
+    });
+</script>
+<?php endif;?>
+
+
+
+
+
+
+
+
+
+
+
+
+

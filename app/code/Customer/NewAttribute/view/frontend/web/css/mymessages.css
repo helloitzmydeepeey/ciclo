@@ -1,0 +1,29 @@
+
+.message.message-success.success.created {
+    margin: 0 0 30px !important;
+    padding: 12px 18px 12px 22.5px !important;
+    display: block !important;
+    font-size: 1.3rem !important;
+    background: #e5efe5 !important;
+    color: green !important;
+    padding-left: 45px !important;
+    position: relative !important;
+}
+
+.message.error-messages.error.created {
+    margin: 0 0 30px !important;
+    padding: 12px 18px 12px 22.5px !important;
+    display: block !important;
+    font-size: 1.3rem !important;
+    background: #fae5e5 !important;
+    color: #e02b27 !important;
+    padding-left: 45px !important;
+    position: relative !important;
+}
+
+.currencyinput {
+    border: 1px inset #ccc;
+}
+.currencyinput input {
+    border: 0;
+}

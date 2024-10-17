@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+   <head>
+    <css src="Apply_Loans::cs/modal.cs"/>
+   </head>
+    <body>
+        <referenceBlock name="product.info.main">
+            <block class="Apply\Loans\Block\Product\View" name="toloan.product.view.button" template="Apply_Loans::product/view/button.phtml" after="product.info.price"/>
+        </referenceBlock>
+    </body>
+</page>

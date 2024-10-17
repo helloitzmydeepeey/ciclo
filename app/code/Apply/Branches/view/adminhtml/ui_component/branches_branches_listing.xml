@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <!-- Integration -->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <!-- we define a provider -->
+            <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing_data_source</item>
+            <!-- same string as above -->
+            <item name="deps" xsi:type="string">branches_branches_listing.branches_branches_listing_data_source</item>
+        </item>
+        <!-- define column type -->
+        <item name="spinner" xsi:type="string">branches_branches_columns</item>
+        <!-- Button to add new item -->
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Branch</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item> <!-- magento will translate it by apply/branches/new -->
+            </item>
+        </item>
+    </argument>
+    <!-- Data source -->
+    <dataSource name="branches_branches_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">BranchGridDataProvider</argument> <!-- Data provider class -->
+            <argument name="name" xsi:type="string">branches_branches_listing_data_source</argument> <!-- provider defined above -->
+            <argument name="primaryFieldName" xsi:type="string">branch_system_id</argument> <!-- Primary key -->
+            <argument name="requestFieldName" xsi:type="string">id</argument> <!-- URL name parameter -->
+
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <!-- Primary key column name -->
+                        <item name="indexField" xsi:type="string">branch_system_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+
+    <!-- Container Listing Top -->
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+            </item>
+        </argument>
+        <!-- Button to manage views -->
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/bookmarks/bookmarks</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="mui/bookmark/save"/>
+                        <item name="deleteUrl" xsi:type="url" path="mui/bookmark/delete"/>
+                        <item name="namespace" xsi:type="string">branches_branches_listing</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <!-- Button to manage columns -->
+        <container name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.branches_branches_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </container>
+
+
+        <!-- Filters -->
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.bookmarks:current.columns.${ $.index }.visible</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <!-- Branch ID -->
+            <filterRange name="branch_system_id">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_system_id</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">ID</item> <!-- Label on grid -->
+                        <item name="childDefaults" xsi:type="array">
+                            <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.listing_filters</item>
+                        </item>
+                    </item>
+                </argument>
+                <filterInput name="from">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="dataScope" xsi:type="string">from</item>
+                            <item name="label" xsi:type="string" translate="true">from</item>
+                            <item name="placeholder" xsi:type="string" translate="true">From</item>
+                        </item>
+                    </argument>
+                </filterInput>
+                <filterInput name="to">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="dataScope" xsi:type="string">to</item>
+                            <item name="label" xsi:type="string" translate="true">to</item>
+                            <item name="placeholder" xsi:type="string" translate="true">To</item>
+                        </item>
+                    </argument>
+                </filterInput>
+            </filterRange>
+            <!-- Branch Dealer Key Type Filter -->
+            <filterInput name="branch_dealer_key">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_dealer_key</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Dealer Key</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+            <!-- Branch Code Filter -->
+             <filterInput name="branch_code">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_code</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Code</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+              <!-- Branch Dealer Group Filter -->
+             <filterInput name="branch_dealer_group">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_dealer_group</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Dealer Group</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+             <!-- 	Branch Title Filter -->
+             <filterInput name="branch_title">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_title</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Title</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+            <!-- Branch City Filter -->
+             <filterInput name="branch_city">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_city</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch City</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+             <!-- Branch Province Filter -->
+             <filterInput name="branch_province">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_province</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Province</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+             <!-- Branch Barangay Filter -->
+             <filterInput name="branch_barangay">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_barangay</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Barangay</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+            <!-- Branch Status Filter -->
+             <filterInput name="branch_status">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="dataScope" xsi:type="string">branch_status</item> <!-- Column name in DB -->
+                        <item name="label" xsi:type="string" translate="true">Branch Status</item> <!-- Label on grid -->
+                    </item>
+                </argument>
+            </filterInput>
+        </filters>
+
+ <!-- Filter Search -->
+        <filterSearch name="fulltext">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing_data_source</item>
+                    <item name="chipsProvider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.listing_filters_chips</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.search</item>
+                    </item>
+                </item>
+            </argument>
+        </filterSearch>
+    <!-- Mass action -->
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">branches_branches_listing.branches_branches_listing.branches_branches_columns.ids</item>
+                    <item name="indexField" xsi:type="string">branch_system_id</item>
+                </item>
+            </argument>
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="apply/branches/massDelete"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete items</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+
+
+        <!-- Paging -->
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">branches_branches_listing.branches_branches_listing.branches_branches_columns.ids</item>
+                    <item name="displayArea" xsi:type="string">bottom</item>
+                </item>
+            </argument>
+        </paging>
+
+
+
+    </container>
+
+
+
+    <!-- Columns -->
+    <columns name="branches_branches_columns">
+       <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <!-- Bookmarks behaviour -->
+                <item name="storageConfig" xsi:type="array">
+                    <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.bookmarks</item>
+                    <item name="namespace" xsi:type="string">current</item>
+                </item>
+                <item name="childDefaults" xsi:type="array">
+                    <item name="controlVisibility" xsi:type="boolean">true</item>
+                    <!-- Bookmarks behaviour -->
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">branches_branches_listing.branches_branches_listing.listing_top.bookmarks</item>
+                        <item name="root" xsi:type="string">columns.${ $.index }</item>
+                        <item name="namespace" xsi:type="string">current.${ $.storageConfig.root}</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+
+        <!-- Add columns with checkboxes -->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">branch_system_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+
+
+        <!-- ID Column -->
+        <column name="branch_system_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                </item>
+            </argument>
+        </column>
+
+
+          <!-- Date Column / Date type -->
+        <column name="branch_created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Created Date</item>
+                    <item name="dateFormat" xsi:type="string" translate="true">MMM dd, YYYY</item>
+                </item>
+            </argument>
+        </column>
+
+         <!-- Branch Created By -->
+        <column name="branch_created_by">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true </item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Created By</item>
+                </item>
+            </argument>
+        </column>
+
+          <!-- Date Column / Date type -->
+        <column name="branch_updated_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Updated Date</item>
+                    <item name="dateFormat" xsi:type="string" translate="true">MMM dd, YYYY</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Branch Updated By -->
+        <column name="branch_updated_by">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true </item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Updated By</item>
+                </item>
+            </argument>
+        </column>
+
+
+        <!-- Branches Type -->
+        <column name="branch_dealer_key">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branches Dealer Key</item>
+                </item>
+            </argument>
+        </column>
+
+     <!-- Branch Code -->
+        <column name="branch_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true </item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Code</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Branch Dealer Group -->
+        <column name="branch_dealer_group">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Dealer Group</item>
+                </item>
+            </argument>
+        </column>
+
+
+        <!-- Branch Title -->
+        <column name="branch_title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true"> Branch Title</item>
+                </item>
+            </argument>
+        </column>
+
+
+        <!-- Branch City -->
+        <column name="branch_city">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch City</item>
+                </item>
+            </argument>
+        </column>
+
+          <!-- Branch Province -->
+        <column name="branch_province">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Province</item>
+                </item>
+            </argument>
+        </column>
+
+          <!-- Branch Barangay -->
+        <column name="branch_barangay">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true"> Branch Barangay</item>
+                </item>
+            </argument>
+        </column>
+
+
+      <!-- Branch Street -->
+        <column name="branch_street">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true"> Branch Street</item>
+                </item>
+            </argument>
+        </column>
+
+
+          <!-- Branch Building -->
+        <column name="branch_building">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true"> Branch Building</item>
+                </item>
+            </argument>
+        </column>
+
+
+        <!-- Branch Building -->
+        <column name="branch_building">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true"> Branch Building</item>
+                </item>
+            </argument>
+        </column>
+
+
+
+
+        <!-- Branch Longitude -->
+        <column name="branch_longitude">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Longitude</item>
+                </item>
+            </argument>
+        </column>
+
+
+
+         <!-- Branch Latitude -->
+        <column name="branch_latitude">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Latitude</item>
+                </item>
+            </argument>
+        </column>
+
+
+
+
+         <!-- Branch Email -->
+        <column name="branch_email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Email</item>
+                </item>
+            </argument>
+        </column>
+
+          <!-- Branch Mobile Number -->
+        <column name="branch_mobile_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Mobile Number</item>
+                </item>
+            </argument>
+        </column>
+
+
+         <!-- Branch Landline Number -->
+        <column name="branch_landline_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Landline Number</item>
+                </item>
+            </argument>
+        </column>
+
+
+
+        <!-- Branch Area Code -->
+        <column name="branch_area_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Area Code</item>
+                </item>
+            </argument>
+        </column>
+
+   <!-- Branch Status -->
+     <column name="branch_status">
+        <argument name="data" xsi:type="array">
+        <item name="options" xsi:type="object">Apply\Branches\Model\Source\Branches\Status</item>
+        <item name="config" xsi:type="array">
+        <item name="filter" xsi:type="string">select</item>
+        <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+        <item name="editor" xsi:type="string">select</item>
+        <item name="dataType" xsi:type="string">select</item>
+        <item name="label" xsi:type="string" translate="true">Status</item>
+    </item>
+    </argument>
+
+        </column>
+
+
+    <!-- Branch ACU ID -->
+        <column name="branch_acu_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch ACU ID</item>
+                </item>
+            </argument>
+        </column>
+
+
+        <!-- Branch Dealer Code-->
+        <column name="branch_dealer_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">text</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="required-entry" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="label" xsi:type="string" translate="true">Branch Dealer Code</item>
+                </item>
+            </argument>
+        </column>
+
+        <!-- Status columns -->
+        <column name="branch_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Apply\Branches\Model\Source\Branches\Status</item>
+                <item name="config" xsi:type="array">
+                <item name="filter" xsi:type="string">select</item>
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                <item name="editor" xsi:type="string">select</item>
+                <item name="dataType" xsi:type="string">select</item>
+                <item name="label" xsi:type="string" translate="true">Status</item>
+                </item>
+            </argument>
+        </column>
+
+
+
+
+         <!-- Action columns -->
+        <actionsColumn name="actions" class="Apply\Branches\Ui\Component\Listing\Column\BranchActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">branch_system_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+
+
+ </columns>
+</listing>

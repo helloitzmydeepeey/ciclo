@@ -1,0 +1,5 @@
+
+.bg {/*background-image: url("../images/success.jpg"); height: 100%;*/background-position: center center;background-repeat: no-repeat;background-size: cover;
+    text-align: center;/*border: 3px solid green; font-weight: larger; */font-weight:900;color:black;}
+.proof{display: inline-block;text-align: left;}
+

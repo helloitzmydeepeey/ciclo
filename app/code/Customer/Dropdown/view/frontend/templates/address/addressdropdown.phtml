@@ -1,0 +1,520 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var \Magento\Customer\Block\Address\Edit $block */
+?>
+<?php $_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class) ?>
+<?php $_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class) ?>
+<?php $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class) ?>
+<?php $cityModel = $block->getLayout()->createBlock(\Customer\Dropdown\Block\CityDropdown::class); ?>
+<?php $provinceModel = $block->getLayout()->createBlock(\Customer\Dropdown\Block\ProvinceDropdown::class); ?>
+<?php $addressTypeBlock = $block->getLayout()->createBlock(\Customer\Dropdown\Block\AddressType::class); ?>
+<form class="form-address-edit"
+      action="<?= $block->escapeUrl($block->getSaveUrl()) ?>"
+      method="post"
+      id="form-validate"
+      enctype="multipart/form-data"
+      data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml(__('Contact Information')) ?></span></legend><br>
+        <?= $block->getBlockHtml('formkey') ?>
+        <input type="hidden" name="success_url" value="<?= $block->escapeUrl($block->getSuccessUrl()) ?>">
+        <input type="hidden" name="error_url" value="<?= $block->escapeUrl($block->getErrorUrl()) ?>">
+        <?= $block->getNameBlockHtml() ?>
+
+        <?php if ($_company->isEnabled()): ?>
+            <?= $_company->setCompany($block->getAddress()->getCompany())->toHtml() ?>
+        <?php endif ?>
+
+        <?php if ($_telephone->isEnabled()): ?>
+            <?= $_telephone->setTelephone($block->getAddress()->getTelephone())->toHtml() ?>
+        <?php endif ?>
+
+        <?php if ($_fax->isEnabled()): ?>
+            <?= $_fax->setFax($block->getAddress()->getFax())->toHtml() ?>
+        <?php endif ?>
+
+    </fieldset>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml(__('Address')) ?></span></legend><br>
+
+        
+
+
+        <?php $_streetValidationClass = $this->helper(\Magento\Customer\Helper\Address::class)
+            ->getAttributeValidationClass('street'); ?>
+        <div class="field street required">
+            <label for="street_1" class="label">
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('street') ?></span>
+            </label>
+            <div class="control">
+                <div class="field primary">
+                    <label for="street_1" class="label">
+                        <span>
+                            <?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('street') . ': Line 1' ?>
+                        </span>
+                    </label>
+                </div>
+                <input type="text"
+                       name="street[]"
+                       value="<?= $block->escapeHtmlAttr($block->getStreetLine(1)) ?>"
+                       title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('street') ?>"
+                       id="street_1"
+                       class="input-text <?= $block->escapeHtmlAttr($_streetValidationClass) ?>"/>
+                <div class="nested">
+                    <?php $_streetValidationClass =
+                        trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
+                    <?php $_n = $this->helper(\Magento\Customer\Helper\Address::class)->getStreetLines() ?>
+                    <?php for ($_i = 1; $_i < $_n; $_i++): ?>
+                        <div class="field additional">
+                            <label class="label" for="street_<?= /* @noEscape */ $_i + 1 ?>">
+                                <span><?= $block->escapeHtml(__('Street Address: Line %1', $_i + 1)) ?></span>
+                            </label>
+                            <div class="control">
+                                <input type="text" name="street[]"
+                                       value="<?= $block->escapeHtmlAttr($block->getStreetLine($_i + 1)) ?>"
+                                       title="<?= $block->escapeHtmlAttr(__('Street Address: Line %1', $_i + 1)) ?>"
+                                       id="street_<?= /* @noEscape */ $_i + 1 ?>"
+                                       class="input-text <?= $block->escapeHtmlAttr($_streetValidationClass) ?>">
+                            </div>
+                        </div>
+                    <?php endfor; ?>
+                </div>
+            </div>
+        </div>
+
+        <?php if ($this->helper(\Magento\Customer\Helper\Address::class)->isVatAttributeVisible()): ?>
+            <div class="field taxvat">
+                <label class="label" for="vat_id">
+                    <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?></span>
+                </label>
+                <div class="control">
+                    <input type="text"
+                           name="vat_id"
+                           value="<?= $block->escapeHtmlAttr($block->getAddress()->getVatId()) ?>"
+                           title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('vat_id') ?>"
+                           class="input-text
+                           <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)
+                               ->getAttributeValidationClass('vat_id')) ?>"
+                           id="vat_id">
+                </div>
+            </div>
+        <?php endif; ?>
+
+
+
+        <div class="field region required">
+            <label class="label" for="region_id">
+                <span> Province </span>
+            </label>
+            <div class="control">
+                <select id="region_id" name="region_id"
+                        title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>"
+                        class="validate-select region_id"
+                        <?= /* @noEscape */ !$block->getConfig('general/region/display_all')
+                            ? ' disabled="disabled"' : '' ?>>
+                    <option value="">
+                        <?= $block->escapeHtml(__('Please select a region, state or province.')) ?>
+                    </option>
+                </select>
+                <input type="hidden"
+                       id="region"
+                       name="region"
+                       value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"
+                       title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('region') ?>"
+                       class="input-text validate-not-number-first
+                        <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)
+                           ->getAttributeValidationClass('region')) ?>"
+                        <?= !$block->getConfig('general/region/display_all') ? ' disabled="disabled"' : '' ?>/>
+
+
+     <!-- Dropdown Region -->
+     <select name="provincedrop" id="provincedrop" class="your-class-name" onchange="ProvinceDrop(this)" required>
+     <option value="">Please Select Region/Province</option>
+        <?php foreach ($provinceModel->getProvinceOptions() as $option): ?>
+            <?php $subRegionIdAttribute = $block->getAddress()->getCustomAttribute('sub_region_id'); ?>
+            <?php if ($subRegionIdAttribute === null || $subRegionIdAttribute->getValue() === null): ?>
+                <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                <option value="<?= $option['value'] ?>" <?php if ($this->escapeHtmlAttr($option['value']) == ""): ?>selected<?php endif; ?>><?= $option['label'] ?></option>
+                <?php endif; ?>
+            <?php else: ?>
+                <option value="<?= $option['value'] ?>" <?php if ($this->escapeHtmlAttr($option['value']) ==  $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('sub_region_id')->getValue())): ?>selected<?php endif; ?>><?= $option['label'] ?></option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </select>
+
+    <div class="field sub_region_id required">
+        <div class="control">
+            <?php $subCityIdAttribute = $block->getAddress()->getCustomAttribute('sub_region_id'); ?>
+                <?php if ($subCityIdAttribute === null || $subCityIdAttribute->getValue() === null): ?>
+                    <input type="hidden" name="sub_region_id" value=""  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('sub_region_id')) ?>"id="sub_region_id">
+                <?php else: ?>
+                    <input type="hidden" name="sub_region_id" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('sub_region_id')->getValue()) ?>"  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('sub_region_id')) ?>"id="sub_region_id">
+                <?php endif; ?>
+        </div>
+        </div>
+
+            </div>
+        </div>
+
+
+
+
+        <div class="field city required">
+            <label class="label" for="city">
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('city') ?></span>
+            </label>
+            <div class="control">
+                <input type="hidden"
+                       name="city"
+                       value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
+                       title="<?= $block->escapeHtmlAttr(__('City')) ?>"
+                       class="input-text
+                        <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)
+                           ->getAttributeValidationClass('city')) ?>"
+                       id="city">
+            </div>
+
+        <!-- Dropdown City -->
+    <select name="citydrop" id="citydrop" class="your-class-name" onchange="CityDrop(this)" required>
+    <option value="" disabled selected>Please Select City</option>
+
+    <?php
+        $subRegionIdAttribute = $block->getAddress()->getCustomAttribute('sub_region_id');
+                        
+        if ($subRegionIdAttribute !== null) {
+            $cityCont = $subRegionIdAttribute->getValue(); 
+        } else {
+            $cityCont = "";
+        }
+        ?>
+        
+        <?php foreach ($cityModel->getCityOptions($cityCont) as $option): ?>
+            <?php $subCityIdAttribute = $block->getAddress()->getCustomAttribute('sub_city_id'); ?>
+            <?php if ($subCityIdAttribute === null): ?>
+                <?php if (!empty($option['value'])): ?>
+                    <option data-citymappingid="<?= $this->escapeHtmlAttr($option['citymappingid']) ?>" value="<?= $this->escapeHtmlAttr($option['value']) ?>">
+                        <?= $this->escapeHtml($option['label']) ?>
+                    </option>
+                <?php endif; ?>
+            <?php else: ?>
+                <option data-citymappingid="<?= $this->escapeHtmlAttr($option['citymappingid']) ?>" value="<?= $this->escapeHtmlAttr($option['value']) ?>"
+                    <?php if ($this->escapeHtmlAttr($option['value']) == $this->escapeHtmlAttr($subCityIdAttribute->getValue())): ?>selected<?php endif; ?>>
+                    <?= $this->escapeHtml($option['label']) ?>
+                </option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+    
+    </select>
+
+
+    <div class="field sub_city_id required">
+        <div class="control">
+            <?php $subCityIdAttribute = $block->getAddress()->getCustomAttribute('sub_city_id'); ?>
+                <?php if ($subCityIdAttribute === null || $subCityIdAttribute->getValue() === null): ?>
+                    <input type="hidden" name="sub_city_id" value=""  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('sub_city_id')) ?>"id="sub_city_id">
+                <?php else: ?>
+                    <input type="hidden" name="sub_city_id" value="  <?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('sub_city_id')->getValue()) ?>"  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('sub_city_id')) ?>"id="sub_city_id">
+                <?php endif; ?>
+        </div>
+        </div>
+
+        <p> </p>
+        </div>
+
+
+
+    <div class="field barangay_title required">
+        <label class="label" for="barangay_title"> <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('barangay_title') ?></span> </label>
+        <div class="control">
+            <?php $BarangayTitleAttribute = $block->getAddress()->getCustomAttribute('barangay_title'); ?>
+            <?php if ($BarangayTitleAttribute === null || $BarangayTitleAttribute->getValue() === null): ?>
+                <input type="hidden" name="barangay_title" value="1"  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('barangay_title')) ?>" id="barangay_title">
+            <?php else: ?>
+                <input type="hidden" name="barangay_title" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('barangay_title')->getValue()) ?>"  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('barangay_title')) ?>" id="barangay_title">
+            <?php endif; ?>
+        <!-- Dropdown Barangay -->
+        <?php $BarangayTitleAttribute = $block->getAddress()->getCustomAttribute('barangay_title'); ?>
+        <?php $BarangayIDAttribute = $block->getAddress()->getCustomAttribute('barangay_id'); ?>
+        <select name="barangaydrop" id="barangaydrop" class="your-class-name" onchange="BarangayDrop(this)" required>
+        <?php if ($BarangayTitleAttribute === null || $BarangayTitleAttribute->getValue() === null): ?>
+        <option value="" selected>Please Select Barangay</option>
+        <?php else: ?>
+        <option value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('barangay_id')->getValue()) ?>" ><?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('barangay_title')->getValue()) ?></option>
+        <?php endif; ?>
+    </select>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="field barangay_id required">
+        <div class="control">
+            <?php $BarangayIDAttribute = $block->getAddress()->getCustomAttribute('barangay_id'); ?>
+            <?php if ($BarangayIDAttribute === null || $BarangayIDAttribute->getValue() === null): ?>
+                <input type="hidden" name="barangay_id" value="1"  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('barangay_id')) ?>" id="barangay_id">
+            <?php else: ?>
+                <input type="hidden" name="barangay_id" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('barangay_id')->getValue()) ?>"  class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('barangay_id')) ?>" id="barangay_id">
+            <?php endif; ?>
+
+        </div>
+    </div>
+
+
+
+
+    <?php
+    $addressTypeOptions = $addressTypeBlock->getAddressTypeOptions();
+    ?>
+
+        <div class="field address_type required">
+            <div class="control">
+                <label class="label" for="address_type">
+                        <span>Address Type</span>
+                </label>
+                <?php $addressType = $block->getAddress()->getCustomAttribute('address_type');?>
+
+                <select name="address_type" id="address_type" required>
+                        <option value="" disabled selected>Please Select Address Type</option>
+                <?php if ($addressType  === null || $addressType->getValue() === null): ?>
+                    <?php foreach ($addressTypeOptions as $option): ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>"><?= $option['label'] ?></option>
+                            <?php endif;?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <?php foreach ($addressTypeOptions as $option): ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>" <?= $option['value'] == $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('address_type')->getValue()) ? 'selected' : '' ?>>
+                                      <?= $option['label'] ?>
+                                  </option>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                </select>
+            </div>
+        </div>
+
+
+
+        <?php
+        $addressDurationOptions = $addressTypeBlock->getAddressDurationOptions();;
+        ?>
+
+        <div class="field address_duration required">
+            <div class="control">
+                <label class="label" for="address_duration">
+                    <span>Address Duration</span>
+                </label>
+                <?php $addressDuration = $block->getAddress()->getCustomAttribute('address_duration'); ?>
+                <select name="address_duration" id="address_duration" required>
+                <option value=" " disabled selected>Please Address Duration</option>
+                <?php if ($addressType  === null || $addressType ->getValue() === null): ?>
+                    <?php foreach ($addressDurationOptions as $option): ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>"><?= $option['label'] ?></option>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                <?php else:?>
+                    <?php foreach ($addressDurationOptions as $option): ?>
+                            <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                                  <option value="<?= $option['value'] ?>" <?= $option['value'] == $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('address_duration')->getValue()) ? 'selected' : '' ?>>
+                                      <?= $option['label'] ?>
+                                  </option>
+                             <?php endif;?>
+                    <?php endforeach; ?>
+                <?php endif;?>
+
+
+                </select>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="field zip required">
+            <label class="label" for="zip">
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="postcode"
+                       value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
+                       title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>"
+                       id="zip"
+                       class="input-text validate-zip-international
+                        <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)
+                           ->getAttributeValidationClass('postcode')) ?>">
+                <div role="alert" class="message warning" style="display:none">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div class="field country required">
+            <label class="label" for="country">
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?></span>
+            </label>
+            <div class="control">
+                <?= $block->getCountryHtmlSelect() ?>
+            </div>
+        </div>
+
+        <?php if ($block->isDefaultBilling()): ?>
+            <div class="message info">
+                <span><?= $block->escapeHtml(__("It's a client address permanent.")) ?></span>
+            </div>
+        <?php elseif ($block->canSetAsDefaultBilling()): ?>
+            <div class="field choice set billing">
+                <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox">
+                <label class="label" for="primary_billing">
+                    <span><?= $block->escapeHtml(__('Use as my client address permanent')) ?></span>
+                </label>
+            </div>
+        <?php else: ?>
+            <input type="hidden" name="default_billing" value="1" />
+        <?php endif; ?>
+
+        <?php if ($block->isDefaultShipping()): ?>
+            <div class="message info">
+                <span><?= $block->escapeHtml(__("It's a client address current.")) ?></span>
+            </div>
+        <?php elseif ($block->canSetAsDefaultShipping()): ?>
+            <div class="field choice set shipping">
+                <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox">
+                <label class="label" for="primary_shipping">
+                    <span><?= $block->escapeHtml(__('Use as my client address current')) ?></span>
+                </label>
+            </div>
+        <?php else: ?>
+            <input type="hidden" name="default_shipping" value="1">
+        <?php endif; ?>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit"
+                    class="action save primary"
+                    data-action="save-address"
+                    title="<?= $block->escapeHtmlAttr(__('Save Address')) ?>">
+                <span><?= $block->escapeHtml(__('Save Address')) ?></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+                <span><?= $block->escapeHtml(__('Go back')) ?></span>
+            </a>
+        </div>
+    </div>
+</form>
+
+
+<!--Script Province Manipulation -->
+<script>
+   function ProvinceDrop(element) {
+    var selectedProvinceId = element.value;
+    var selText = element.options[element.selectedIndex].text;
+    document.getElementById("region").value = selText;
+    document.getElementById("sub_region_id").value = selectedProvinceId;
+
+    var cityDrop = document.getElementById("citydrop");
+    var cities = cityDrop.getElementsByTagName("option");
+
+    // Hide all cities initially
+    for (var i = 0; i < cities.length; i++) {
+        cities[i].style.display = "none";
+    }
+
+    // Show cities that correspond to the selected province
+    for (var i = 0; i < cities.length; i++) {
+        var cityMappingId = cities[i].getAttribute("data-citymappingid");
+        if (cityMappingId == selectedProvinceId) {
+            cities[i].style.display = "block";
+        }
+    }
+}
+
+
+
+
+
+
+function CityDrop(element) {
+    var selectedCityId = element.value;
+    var selectedCityText = element.options[element.selectedIndex].text;
+    document.getElementById("city").value = selectedCityText;
+    document.getElementById("sub_city_id").value = selectedCityId;
+}
+// Trigger the initial change event to populate cities based on the initial province selection
+ProvinceDrop(document.getElementById("provincedrop"));
+// Trigger the initial change event to populate cities based on the initial city selection
+CityDrop(document.getElementById("citydrop"));
+
+
+
+
+function BarangayDrop(sel) {
+       var selValue = sel.value;
+       var selText = sel.options[sel.selectedIndex].text;
+       document.getElementById("barangay_title").value = selText;
+       document.getElementById("barangay_id").value = selValue;
+   }
+
+
+
+    var contactNumberInput = document.getElementById("telephone");
+    contactNumberInput.addEventListener("input", function() {
+        var value = contactNumberInput.value;
+        if (value.length > 11) {
+            contactNumberInput.value = value.slice(0, 11);
+        }
+        if (!/^09\d{0,9}$/.test(contactNumberInput.value)) {
+            contactNumberInput.setCustomValidity("Please input correct mobile number must be 11 digits!");
+        } else {
+            contactNumberInput.setCustomValidity("");
+        }
+    });
+
+</script>
+
+
+
+
+
+
+
+<script type="text/x-magento-init">
+    {
+        "#form-validate": {
+            "addressValidation": {
+                "postCodes": <?= /* @noEscape */ $block->getPostCodeConfig()->getSerializedPostCodes(); ?>
+            }
+        },
+        "#country": {
+            "regionUpdater": {
+                "optionalRegionAllowed":
+                <?= /* @noEscape */ $block->getConfig('general/region/display_all') ? 'true' : 'false' ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+                "regionJson":
+                <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)->getRegionJson() ?>,
+                "defaultRegion": "<?= (int) $block->getRegionId() ?>",
+                "countriesWithOptionalZip":
+                <?= /* @noEscape */ $this->helper(\Magento\Directory\Helper\Data::class)
+                    ->getCountriesWithOptionalZip(true) ?>
+            }
+        }
+    }
+</script>

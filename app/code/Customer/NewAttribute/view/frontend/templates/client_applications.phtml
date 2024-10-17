@@ -1,0 +1,72 @@
+<?php
+$customerSession = $block->getCustomerSession();
+?>
+
+<?php $applications = $block->getApplications(); ?>
+<?php if ($applications->getSize() > 0): ?>
+    <div class="table-wrapper orders-history">
+    <?php
+        $pager = $block->getLayout()->createBlock(\Magento\Theme\Block\Html\Pager::class)
+            ->setLimit(10) // Set the number of applications per page (e.g., 10)
+            ->setShowPerPage(true)
+            ->setCollection($applications);
+        ?>
+        <table class="data table table-order-items history" id="my-orders-table">
+            <caption class="table-caption"><?= $block->escapeHtml(__('Applications')) ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col id"><?= $block->escapeHtml(__('Application #')) ?></th>
+                    <th scope="col" class="col date"><?= $block->escapeHtml(__('Application Date')) ?></th>
+                    <?= $block->getChildHtml('extra.column.header') ?>
+                    <th scope="col" class="col shipping"><?= $block->escapeHtml(__('Dealer Branch')) ?></th>
+                    <th scope="col" class="col total"><?= $block->escapeHtml(__('Motorcycle Brand')) ?></th>
+                    <th scope="col" class="col total"><?= $block->escapeHtml(__('Motorcycle Model')) ?></th>
+                    <th scope="col" class="col status"><?= $block->escapeHtml(__('Loan Status')) ?></th>
+                    <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($applications as $application): ?>
+                    <tr>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Application #')) ?>" class="col id">
+                            <?= $application->getEntityId() ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Application Date')) ?>" class="col date">
+                            <?= $application->getCreatedAt() ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Dealer Branch')) ?>" class="col shipping">
+                            <?= $application->getLoanDealerBranchTitle() ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Motorcycle Brand')) ?>" class="col total">
+                            <?= $application->getMotorcycleBrand() ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Motorcycle Model')) ?>" class="col total">
+                            <?= $application->getMotorcycleModel() ?>
+                        </td>
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Status')) ?>" class="col status">
+                            <?= $application->getLoanStatus() ?>
+                        </td>
+
+                        <td data-th="<?= $block->escapeHtmlAttr(__('Actions')) ?>" class="col actions">
+                        <?php if ($application->getLoanStatus() !== 'Canceled' && $application->getLoanStatus() !== 'Processing' && $application->getLoanStatus() !== 'Approved'): ?>
+                        <a href="<?= $block->escapeUrl($block->getCancelUrl($application->getEntityId())) ?>" class="action order">
+                        <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                            </a>
+                          <?php else: ?>
+                         <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                     <?php endif; ?>
+                        </td>
+
+
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($pager->getCollection()->getSize() > $pager->getLimit()): ?>
+        <?= $pager->getPagerHtml() ?>
+    <?php endif; ?>
+<?php else: ?>
+    <div class="order-products-toolbar toolbar bottom"></div>
+    <div class="message info empty"><span> <p>No applications found.</p></span></div>
+<?php endif; ?>

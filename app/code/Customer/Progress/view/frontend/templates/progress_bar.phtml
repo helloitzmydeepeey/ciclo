@@ -1,0 +1,87 @@
+<style>
+ .progress-bar-container {
+    width: 100%;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 20px;
+ }
+
+ .progress-bar {
+    background: #959595;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+ }
+
+ .progress-bar div {
+    height: 10px;
+    border-radius: 5px;
+    width: 0;
+ }
+
+ .progress-bar div span {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #222;
+    float: right;
+    margin-top: -15px;
+    margin-right: -20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .progress-green {
+    background: green;
+    animation: html 1s linear forwards;
+ }
+
+ .progress-green span {
+    border: 5px solid green;
+ }
+
+ .progress-red {
+    background: red;
+ }
+
+ .progress-red span {
+    border: 5px solid red;
+ }
+
+ .progress-note {
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+ }
+
+ .progress-note .green-note {
+    color: green;
+    font-weight: bold;
+ }
+
+ .progress-note .red-note {
+    color: red;
+    font-weight: bold;
+ }
+</style>
+
+<div class="progress-bar-container">
+    <div class="progress-bar">
+        <div class="<?php echo ($block->getProgressPercentage() == 100) ? 'progress-green' : 'progress-red'; ?>" style="width: <?php echo $block->getProgressPercentage(); ?>%;">
+            <span><?php echo $block->getProgressPercentage(); ?>%</span>
+        </div>
+    </div>
+</div>
+
+<div class="progress-note">
+    <?php if ($block->getProgressPercentage() == 100): ?>
+        <span class="green-note">You can now apply for a loan!</span>
+    <?php else: ?>
+        <span class="red-note">Loan application requires 100% completion. Please complete the form that has a red warning!</span>
+    <?php endif; ?>
+</div>

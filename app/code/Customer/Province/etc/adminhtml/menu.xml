@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Customer_Province::province_head" title="Manage Address" module="Customer_Province" sortOrder="100" parent="Magento_Customer::customer" resource="Customer_Province::province_head" />
+        <add id="Customer_Province::province" title="Province" module="Customer_Province" sortOrder="10" parent="Customer_Province::province_head" action="provinces/provinces" resource="Customer_Province::province" />
+    </menu>
+</config>

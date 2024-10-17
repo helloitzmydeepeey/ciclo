@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales">
+                    <resource id="Apply_Loans::loan_head" title="Apply Branches" sortOrder="100" >
+                        <resource id="Apply_Branches::branches" title="Branches" sortOrder="10">
+                            <resource id="Apply_Branches::branches_save" title="Save Branches" sortOrder="10" />
+                            <resource id="Apply_Branches::branches_delete" title="Delete Branches" sortOrder="20" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

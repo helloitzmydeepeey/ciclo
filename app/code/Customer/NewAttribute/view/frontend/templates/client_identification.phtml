@@ -1,0 +1,78 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+
+/** @var Customer\NewAttribute\Block\Dropdown $block */
+$getClientIdentificationTypeOptions = $block->getClientIdentificationTypeOptions();
+$ClientIdentificationTypeValue = $block->getClientIdentificationTypeValue();
+$clientIdentificationNumber = $block->getClientIdentificationNumber();
+$clientMotorcycleLoanAttachmentIdentification = $block->getMotorcycleLoanAttachmentIdentification();
+$clientMotorcycleLoanAttachmentIssuedDate = $block->getMotorcycleLoanAttachmentIssuedDate();
+$clientMotorcycleLoanAttachmentExpirationDate = $block->getMotorcycleLoanAttachmentExpirationDate();
+$getMotorcycleLoanAttachmentDocumentTypeOptions = $block->getMotorcycleLoanAttachmentDocumentTypeOptions();
+$getMotorcycleLoanAttachmentDocumentTypeValue = $block->getMotorcycleLoanAttachmentDocumentTypeValue();
+$getClientPersonalInformationCivilStatusOptions = $block->getClientPersonalInformationCivilStatusOptions();
+$getClientPersonalInformationCivilStatusValue = $block->getClientPersonalInformationCivilStatusValue();
+
+$successMessage = $block->getLayout()->createBlock(\Magento\Framework\View\Element\Messages::class)->toHtml();
+?>
+
+<style>
+.field {
+    margin-bottom: 2em;
+}
+
+.asterisk {
+    color: red;
+}
+span{
+    font-weight:600;
+}
+</style>
+
+
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <?php echo $block->getLayout()->createBlock(\Magento\Framework\View\Element\Messages::class)->setTemplate('Magento_Theme::messages.phtml')->toHtml(); ?>
+
+    <form action="<?= $block->getUrl('client/identification/save') ?>" method="post" class="form form-edit-account" enctype="multipart/form-data">
+        <?= $block->getBlockHtml('formkey') ?>
+
+        <legend class="legend" style="padding: 0; border: 0; color: #ec7200; text-transform: uppercase; margin: 0 0 20px; font-size: 16px; font-weight: 400;">
+            <span>Identification</span>
+        </legend>
+
+        <div class="field client_identification_number required">
+            <label class="label" for="client_identification_number">
+                <span><?= __('ID Number:'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <input type="text" name="client_identification_number" id="client_identification_number" value="<?= $clientIdentificationNumber ?: '' ?>" required>
+            </div>
+        </div>
+
+        <div class="field client_identification_type required">
+            <label class="label" for="client_identification_type">
+                <span><?= __('ID Type:'); ?></span>
+                <span class="asterisk">*</span>
+            </label>
+            <div class="control">
+                <select name="client_identification_type" id="client_identification_type" required>
+                    <option value="" disabled selected>Please Select Identification Type</option>
+                    <?php foreach ($getClientIdentificationTypeOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>" <?= $option['value'] == $ClientIdentificationTypeValue ? 'selected' : '' ?>>
+                                <?= $option['label'] ?>
+                            </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <p style='color:red;font-weight:700px;'> Please add the details of your ID that you will attach in Loan Attachment </p>
+
+
+        <button type="submit">Save</button>
+    </form>
+<?php endif; ?>

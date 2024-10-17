@@ -1,0 +1,25 @@
+.p-decide{text-align: center;}
+.loan-apply {padding: 10px;  margin: auto; width: 70%;}
+.loan-apply-date{width: 50%;}
+.loan-apply-application-no {width: 50%; position: relative; left:300px;}
+.loan-apply-type-loan{width: 50%; }
+.loan-apply-repeat-borrower{width: 50%; position: relative; left:600px; bottom: 70px;}
+.loan-apply-button-next{background-color:#FFD700 !important  ;color: black; float:right;  border-radius: 60%;}
+.datepicker{width: 89%; height: 37px;}
+.upload-file{position:relative; left: 400px; bottom: 20px;}
+.loan2-phtml{margin-left: auto;margin-right: auto;width: 50%;}
+.loan-phtml h3.heading-loan label{font-weight: 900 !important;}
+.loan2-phtml h3.heading-loan2 label{font-weight: 900 !important;}
+.radio-brandmake{margin-left: auto; margin-right: auto; width: 50%;}
+hr{ height: 5px; background-color: #FF8C00 !important;}
+.loan-apply-model{width:50% !important;}
+.loan-apply-sellp{width: 50%; position: relative; left:400px; bottom: 87px;}
+.loan-apply-downpayment{width:50% !important;}
+.loan-apply-term{width: 50%; position: relative; left:600px; bottom: 85px;}
+.loan-apply-text{font-weight: 800;}
+.select-loan-term{width: 50% !important;}
+.select-lead-source{width: 50% !important;}
+.bg {/*background-image: url("../images/success.jpg"); height: 100%;*/background-position: center center;background-repeat: no-repeat;background-size: cover;
+    text-align: center;/*border: 3px solid green; font-weight: larger; */font-weight:900;color:black;}
+.proof{display: inline-block;text-align: left;}
+

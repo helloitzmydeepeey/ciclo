@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Create our type BarangayGridDataProvider -->
+    <virtualType name="BarangayGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Customer\Barangay\Model\Resource\Barangay\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">BarangayGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type BarangayGridFilterPool -->
+    <virtualType name="BarangayGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Type for barangays_barangays_listing_data_source -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="barangays_barangays_listing_data_source" xsi:type="string">Customer\Barangay\Model\ResourceModel\Grid\Barangay\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Simulate our class Customer\Barangay\Model\ResourceModel\Grid\Barangay\Collection -->
+    <virtualType name="Customer\Barangay\Model\ResourceModel\Grid\Barangay\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">customer_barangay</argument>
+            <argument name="resourceModel" xsi:type="string">Customer\Barangay\Model\ResourceModel\Barangay</argument>
+        </arguments>
+    </virtualType>
+</config>

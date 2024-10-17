@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Create our type NationalityGridDataProvider -->
+    <virtualType name="NationalityGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Customer\Nationality\Model\Resource\Nationality\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">NationalityGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+
+    <!-- Create our type NationalityGridFilterPool -->
+    <virtualType name="NationalityGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Type for nationalities_nationalities_listing_data_source -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="nationalities_nationalities_listing_data_source" xsi:type="string">Customer\Nationality\Model\ResourceModel\Grid\Nationality\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Simulate our class Customer\Nationality\Model\ResourceModel\Grid\Nationality\Collection -->
+    <virtualType name="Customer\Nationality\Model\ResourceModel\Grid\Nationality\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">customer_nationality</argument>
+            <argument name="resourceModel" xsi:type="string">Customer\Nationality\Model\ResourceModel\Nationality</argument>
+        </arguments>
+    </virtualType>
+</config>

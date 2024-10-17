@@ -1,0 +1,12 @@
+<?php
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+$_attributeLabel = $_product->getResource()->getAttribute('description')->getStoreLabel();
+$_attributeValue = ($_helper->productAttribute($_product, $_product->getDescription(), 'description')) ? $_product->getAttributeText('description') : '';
+?>
+<?php if ($_attributeValue): ?>
+    <div class="product-description">
+        <strong class="type"><?= /* @escapeNotVerified */ $_attributeLabel ?></strong>
+        <div class="value"><?= /* @escapeNotVerified */ $_attributeValue ?></div>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,263 @@
+
+<style>
+.fields  {
+  display: none;
+}
+
+</style>
+<script>
+    require(['jquery'], function($) {
+        $(document).ready(function() {
+            var downpaymentValues = localStorage.getItem('myDownpayment');
+            var downpaymentTerms = localStorage.getItem('myTerms');
+            $('#loan_downpayment').val(downpaymentValues);
+            $('#loan_term').val(downpaymentTerms);
+        });
+    });
+</script>
+
+<div class="row">
+    <div style="margin:auto;width:100%;padding:10px;text-align: center;">
+        <form name="addData" method="post" id="addData" class="form"
+            action="<?php echo $block->getUrl('loan/manage/save'); ?>"
+              data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
+              data-mage-init='{"validation":{}}' enctype="multipart/form-data">
+            <fieldset class="fieldset" style="margin:auto;">
+            <!--<legend class="legend"><span class="span-title-phtml" style="color:black;font-weight:700px;text-align:center;"><?= $block->escapeHtmlAttr(__('Apply For A Loan')) ?></span></legend> -->
+              <p class="p-decide" style="color:black !important;font-weight:700px !important;text-align:center!important;">If you already decided on what motorcycle to buy and want to apply for a loan,please fill out the
+                                 important details in the form for authorization. <p>
+                <hr>
+                <h3 class="heading-loan"> MOTORCYCLE LOAN APPLICATION </h3>
+                <br>
+                <br>
+                <fieldset class="fieldset row">
+                    <div class="fields" style="width:100%;">
+
+
+                    <div class="field status required">
+                          <!-- <label class="label" for="title"><span> $block->
+                                escapeHtmlAttr(__(' APPLICATION NO.')) ?></span></label> -->
+                            <div class="control loan-apply-status-no">
+                                <input name="loan_status" id="loan_status"  value="0" class="input-number" type="hidden">
+                            </div>
+                        </div>
+
+
+                        <div class="field application required">
+                          <!-- <label class="label" for="title"><span> $block->
+                                escapeHtmlAttr(__(' APPLICATION NO.')) ?></span></label> -->
+                            <div class="control loan-apply-application-no">
+                            <h3 class="heading-loan"> APPLICATION NO. </h3>
+                                <input name="application_number" id="application_number" title="APPLICATION NO" value="" class="input-number" type="text"
+                                data-validate="{required:true, 'validate-alphanum-with-spaces':true}" style="width:50%;"
+                                oninput="this.className = ''" pattern="[0-9]">
+                            </div>
+                        </div>
+
+                        <div class="field name required">
+                            <!--<label class="label" for="title"><span>$block->
+                                escapeHtmlAttr(__('Type of Loan')) ?></span></label> -->
+                            <div class="control loan-apply-type-loan">
+                            <h3 class="heading-loan">TYPE OF LOAN * </h3>
+                            <input type="radio" id="individual" name="loan_type" value="INDIVIDUAL"  data-validate="{required:true, 'validate':true}" oninput="this.className = ''">
+                            <label for ="individual"> INDIVIDUAL </label>
+                            <input type="radio" id="institutional" name="loan_type" value="INSTITUTIONAL"  data-validate="{required:true, 'validate':true}" oninput="this.className = ''">
+                            <label for ="institutional"> INSTITUTIONAL </label>
+
+                            </div>
+                        </div>
+
+
+                        <div class="field name required">
+                            <!--<label class="label" for="title"><span> $block->
+                                escapeHtmlAttr(__('REPEAT BORROWER')) ?></span></label> -->
+                            <div class="control loan-apply-repeat-borrower">
+                            <h3 class="heading-loan"> REPEAT BORROWER * </h3>
+                            <input type="radio" id="yes" name="repeat_borrower" value="YES" data-validate="{required:true, 'validate':true}" oninput="this.className = ''" >
+                            <label for ="yes"> YES </label>
+                            <input type="radio" id="no" name="repeat_borrower" value="NO" data-validate="{required:true, 'validate':true}" oninput="this.className = ''">
+                            <label for ="no"> NO </label>
+
+
+                           <!-- <label class="label" for="title"><span>$block->
+                                escapeHtmlAttr(__('REPEAT BORROWER')) ?></span></label> -->
+
+
+
+                            </div>
+                        </div>
+
+                        <div class="field name required">
+                        <div class="control">
+                        <h3 class="heading-loan"> PURPOSE OF AVAILING MOTORCYCLE UNIT * </h3>
+                            <input type="radio" id="avail_purpose" name="avail_purpose" value="BUSINESS-SELF-EMPLOYED" data-validate="{required:true, 'validate':true}" oninput="this.className = ''">
+                            <label for ="business-self-employed"> BUSINESS-SELF-EMPLOYED </label>
+                            <input type="radio" id="avail_purpose" name="avail_purpose" value="TODA-OPERATOR/DRIVER" data-validate="{required:true, 'validate':true}" oninput="this.className = ''">
+                            <label for ="toda-operator/driver"> TODA-OPERATOR/DRIVER</label>
+                            <input type="radio" id="avail_purpose" name="avail_purpose" value="SERVICE-COMMUTING EMPLOYEES" data-validate="{required:true, 'validate':true}"oninput="this.className = ''">
+                            <label for ="service-commuting employees"> SERVICE-COMMUTING EMPLOYEES</label>
+                            <input type="radio" id="avail_purpose" name="avail_purpose" value="OTHERS" data-validate="{required:true, 'validate':true}" oninput="this.className = ''">
+                            <label for ="others"> OTHERS</label>
+
+                            </div>
+                        </div>
+
+                        <!--<div class="field name required">
+                            <label class="label" for="title"><span><?= $block->escapeHtmlAttr(__('Telephone')) ?></span></label>
+                            <div class="control">
+                                <input name="telephone" id="telephone" title="Telephone" value="" class="input-text"
+                                       type="text" data-validate="{required:true}">
+     
+          </div>
+                        </div> -->
+                    </div>
+                    <div class="fields" style="width:100%;">
+                    <h3 class="heading-loan2"> PRODUCT TO BE AVAILED OF * <h3>
+                    <div class="field name required">
+                           <!-- <label class="label" for="title"><span> $block->
+                                escapeHtmlAttr(__('BRAND ')) ?></span></label> -->
+                            <div class="control radio-brandmake">
+                            <h3 class="heading-loan2"> BRAND * </h3>
+                            <select name="motor_brand" id="motor_brand" data-validate="{required:true}">
+                            <option value="" selected disabled>Choose Brand</option>
+                            <option value="YAMAHA">YAMAHA</option>
+                            <option value="KAWASAKI">KAWASAKI</option>
+                            <option value="SUZUKI">SUZUKI</option>
+                            <option value="HONDA">HONDA</option>
+                            <option value="OTHERS">OTHERS</option>
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="field name required">
+                           <!-- <label class="label" for="title"><span> $block->
+                                escapeHtmlAttr(__('Loan Downpayment')) ?></span></label> -->
+                            <div class="control loan-apply-downpayment">
+                            <h3 class="heading-loan2"> DOWNPAYMENT * </h3>
+                            <input name="loan_downpayment" id="loan_downpayment" title="Loan Downpayment"  class="input-text" type="text"
+                                       data-validate="{required:true, 'validate-alphanum-with-spaces':true}" style="width:50%;" disabled>
+
+                            </div>
+                        </div>
+
+
+                        <div class="field name required">
+                            <!--<label class="label" for="title"><span> $block->
+                                escapeHtmlAttr(__('LOAN TERM')) ?></span></label> -->
+                            <div class="control loan-apply-term">
+                            <h3 class="heading-loan2"> TERM * </h3>
+
+                            <input name="loan_term" id="loan_term" title="Loan Term"  class="input-text" type="text"
+                            data-validate="{required:true, 'validate-alphanum-with-spaces':true}" style="width:50%;" disabled>
+                            </div>
+                        </div>
+
+                        <div class="field name required">
+                           <!-- <label class="label" for="title"><span>< $block->
+                                escapeHtmlAttr(__('Lead Source')) ?></span></label> -->
+                            <div class="control loan-apply-source">
+                            <h3 class="heading-loan2"> SOURCE OF LEAD *  </h3>
+                            <select name="lead_source" id="lead_source" data-validate="{required:true}" class="select-lead-source">
+                            <option value="" selected disabled>Choose Source of Lead </option>
+                            <option value="Referrals">Referrals </option>
+                            <option value="Social Media">Social Media</option>
+                            <option value="Search Engines">Search Engines</option>
+                            <option value="Marketing Platform">Marketing Platform</option>
+                            </select>
+
+                            </div>
+                        </div>
+
+            </div>
+            </div>
+
+
+                </fieldset>
+
+            </fieldset>
+
+
+            <div class="actions-toolbar" style="position:relative; left:1000px;" >
+                <div class="primary" style="float:right !important;">
+                <button type="submit" id="prevBtn" class="action submit primary" onclick="nextPrev(-1)">Previous</button>
+                <button type="submit" id="nextBtn" class="action submit primary" onclick="nextPrev(1)">Next</button>
+                <button type="submit" id="save" class="action submit primary" title="Save">Save</button>
+                </div>
+            </div>
+
+        </form>
+</div>
+</div>
+
+
+<script>
+var currentTab = 0; // Current tab is set to be the first tab (0)
+showTab(currentTab); // Display the current tab
+
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("fields");
+  x[n].style.display = "block";
+  //... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+    document.getElementById("save").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+    document.getElementById("save").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("save").innerHTML = "Submit";
+    document.getElementById("nextBtn").style.display = "none";
+  }else{
+    document.getElementById("nextBtn").innerHTML = "Next";
+    document.getElementById("nextBtn").style.display = "inline"
+  }
+}
+
+function nextPrev(n) {
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("fields");
+  // Exit the function if any field in the current tab is invalid:
+    if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+  currentTab = currentTab + n;
+  // if you have reached the end of the form...
+  if (currentTab >= x.length) {
+    // ... the form gets submitted:
+    document.getElementById("addData").submit();
+    return false;
+  }
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+function validateForm() {
+  // This function deals with validation of the form fields
+  var x, y, i, valid = true;
+  x = document.getElementsByClassName("fields");
+  y = x[currentTab].getElementsByTagName("input");
+  // A loop that checks every input field in the current tab:
+  for (i = 0; i < y.length; i++) {
+    // If a field is empty...
+    if (y[i].value == "") {
+      // add an "invalid" class to the field:
+      y[i].className += " invalid";
+      // and set the current valid status to false
+      valid = false;
+    }
+  }
+  if (valid) {
+   [currentTab].className += " finish";
+  }
+  return valid;
+}
+</script>
+
+</body>
+</html>
+
+
+

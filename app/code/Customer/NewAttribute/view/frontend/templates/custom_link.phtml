@@ -1,0 +1,165 @@
+<?php
+$notificationList = $block->getLayout()->createBlock(\Customer\NewAttribute\Block\Notifications::class);
+?>
+<style>
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    display: none;
+    position: relative;
+    z-index: 1000;
+    padding: 0;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.5rem 1rem;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #212529;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #ec7200;
+}
+
+/* Custom Link Styles */
+.nav.item.dropdown .dropdown-toggle {
+    cursor: pointer;
+}
+
+/* Adjust the width of the dropdown menu */
+.nav.item.dropdown .dropdown-menu {
+    min-width: 200px; /* Adjust the width as needed */
+}
+
+/* Highlight the selected link */
+a.dropdown-item.active {
+    background-color: #ec7200;
+    color: black !important;
+}
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+</style>
+
+<li class="nav item dropdown">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+        <span><?php echo __('My Account'); ?></span>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="custom-link-dropdown">
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'account') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('customer/account/edit'); ?>">
+            <?php echo __('Account Information'); ?>
+        </a>
+      <?php  $notificationCount = $notificationList->getCustomAddressAttributeNotification() ?: ""; ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'address') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('customer/address'); ?>">
+            <?php echo __('Address Book'); ?>
+            <?php if ($notificationCount > 0): ?>
+                <span class="fa fa-exclamation-circle" style="color:red; font-size: 20px; position: absolute; top: 35px; right: 205px; animation: bounce 3s infinite;" title="Please Complete the Remaining Fields"></span>
+         <?php endif; ?>
+        </a>
+
+
+        <?php $notificationCount = $notificationList->getClientInformationNotification(); ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'personal') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/personal/index'); ?>">
+            <?php echo __('My Personal Info'); ?>
+            <?php if ($notificationCount > 0): ?>
+                <span class="fa fa-exclamation-circle" style="color:red; font-size: 20px; position: absolute; top: 65px; right: 205px; animation: bounce 3s infinite;" title="Please Complete the Remaining Fields"></span>
+            <?php endif; ?>
+        </a>
+
+        <?php $notificationCount = $notificationList->getClientIdentificationNotification(); ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'identification') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/identification/index'); ?>">
+            <?php echo __('My Identification'); ?>
+            <?php if ($notificationCount > 0): ?>
+                <span class="fa fa-exclamation-circle" style="color:red; font-size: 20px; position: absolute; top: 95px; right: 205px; animation: bounce 3s infinite;" title="Please Complete the Remaining Fields"></span>
+            <?php endif; ?>
+        </a>
+        <?php $notificationCount = $notificationList->getClientExpenditureNotification(); ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'expenditure') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/expenditure/index'); ?>">
+            <?php echo __('My Family Expenditure'); ?>
+            <?php if ($notificationCount > 0): ?>
+                <span class="fa fa-exclamation-circle" style="color:red; font-size: 20px; position: absolute; top: 125px; right: 205px; animation: bounce 3s infinite;" title="Please Complete the Remaining Fields"></span>
+            <?php endif; ?>
+
+        </a>
+        <?php $notificationCount = $notificationList->getClientReferenceNotification(); ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'reference') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/reference/index'); ?>">
+            <?php echo __('My Character Reference'); ?>
+            <?php if ($notificationCount > 0): ?>
+                <span class="fa fa-exclamation-circle" style="color:red; font-size: 20px; position: absolute; top: 155px; right: 205px; animation: bounce 3s infinite;" title="Please Complete the Remaining Fields"></span>
+            <?php endif; ?>
+        </a>
+
+
+        <?php $notificationCount = $notificationList->getClientAttachmentNotification(); ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'loanattach') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/loanattach/index'); ?>">
+            <?php echo __('My Attachment'); ?>
+            <?php if ($notificationCount > 0): ?>
+                <span class="fa fa-exclamation-circle" style="color:red; font-size: 20px; position: absolute; top: 185px; right: 205px; animation: bounce 3s infinite;" title="Please Complete the Remaining Fields"></span>
+            <?php endif; ?>
+        </a>
+
+        <?php $notificationStatus = $notificationList->getClientApplicationNotification(); ?>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'applications') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/applications/index'); ?>">
+            <?php echo __('My Applications'); ?>
+            <?php if ($notificationStatus === 'Pending'): ?>
+                <span class="fa fa-exclamation-circle" style="color:#f0ad4e; font-size: 20px; position: absolute; top: 215px; right: 205px; animation: bounce 3s infinite;" title="You have pending loan applications"></span>
+            <?php endif; ?>
+        </a>
+
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'comakerinfo') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/comakerinfo/index'); ?>">
+            <?php echo __('My Comaker Info'); ?>
+        </a>
+        <a style="color: black;" class="dropdown-item <?php echo ($block->getRequest()->getModuleName() == 'comakeradd') ? 'active' : ''; ?>" href="<?php echo $block->getUrl('client/comakeradd/index'); ?>">
+            <?php echo __('My Comaker Address'); ?>
+        </a>
+
+    </div>
+</li>
+
+<script>
+require(['jquery'], function ($) {
+    $(document).ready(function () {
+        // Add 'active' class to the selected dropdown item
+        $('.dropdown-item').each(function() {
+            var href = $(this).attr('href');
+            if (window.location.href.includes(href)) {
+                $(this).addClass('active');
+                $(this).closest('.dropdown-menu').addClass('show');
+                $(this).closest('.nav.item.dropdown').addClass('active');
+            }
+        });
+
+        $('.nav.item.dropdown .dropdown-toggle').on('click', function (e) {
+            e.preventDefault();
+            $(this).siblings('.dropdown-menu').toggleClass('show');
+            $('.nav.item.dropdown').toggleClass('active');
+        });
+
+        // Close the dropdown menu when clicking outside
+        $(document).on('click', function (e) {
+            if (!$('.nav.item.dropdown .dropdown-toggle').is(e.target) && !$('.dropdown-menu').has(e.target).length) {
+                $('.dropdown-menu').removeClass('show');
+                $('.nav.item.dropdown').removeClass('active');
+            }
+        });
+    });
+});
+</script>

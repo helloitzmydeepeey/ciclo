@@ -1,0 +1,20 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$cookieManager = $objectManager->get(\Magento\Framework\Stdlib\CookieManagerInterface::class);
+$successMessage = $cookieManager->getCookie('success_message');
+if ($successMessage) {
+    echo '<div id="messages">';
+    echo '<div class="message message-success success created">';
+    echo "<div data-ui-id='messages-message-success'>$successMessage</div>";
+    echo '</div>';
+    echo '</div>';
+}
+$errorMessage = $cookieManager->getCookie('error_message');
+if ($errorMessage) {
+    echo '<div id="messages">';
+    echo '<div class="message error-messages error created">';
+    echo "<div data-ui-id='messages-error-messages'>$errorMessage</div>";
+    echo '</div>';
+    echo '</div>';
+}
+?>

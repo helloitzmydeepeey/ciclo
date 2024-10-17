@@ -1,0 +1,180 @@
+
+<?php $currentProduct = $block->getCurrentProduct(); ?>
+    <?php $categoryIds = $currentProduct->getCategoryIds(); ?>
+    <?php $productId = $currentProduct->getId(); ?>
+    <?php if (in_array(6, $categoryIds)): ?>
+<?php if ($block->isLoggedIn()): ?>
+
+        <script type="text/javascript">
+        require(['jquery'], function($) {
+          $(document).ready(function() {
+                $('#toloan-product-view-button').prop('disabled', true); // Disable button initially
+                $('#select-terms, #select-branch').change(function() {
+                 var termValue = $('#select-terms').val();
+                 var branchesValue = $('#select-branch').val();
+
+                 if (termValue !=null && branchesValue !=null ) {
+                   $('#toloan-product-view-button').prop('disabled', false); // Enable button if both select options have a selected value
+                 } else {
+                   $('#toloan-product-view-button').prop('disabled', true); // Disable button if either select option doesn't have a selected value
+                 }
+        });
+            });
+                  });
+                </script>
+
+        <script>
+        function handleBranchChange() {
+        var BranchSelect = document.getElementById('select-branch');
+        var BranchCompany = document.getElementById('branch_company').value; // fixed typo in "value"
+        var selectedBranch = BranchSelect.value;
+        var selectedBranchKey = BranchSelect.options[BranchSelect.selectedIndex].getAttribute('data-branch-key'); // fixed access to "data-branch-key"
+        var selectedBranchTitle=BranchSelect.options[BranchSelect.selectedIndex].getAttribute('data-branch-title');
+        document.cookie = 'myBranchCode=' + selectedBranch + '; path=/';
+        document.cookie = 'myBranchKey=' + selectedBranchKey + '; path=/';
+        document.cookie = 'myBranchCompany=' + BranchCompany + '; path=/';
+        document.cookie = 'myBranchTitle=' + selectedBranchTitle + '; path=/';
+
+    }
+
+
+
+
+        </script>
+
+<div class="price-after-text" style="background:#272723;">
+
+<span class="span-select-branch" style="color:#FFD700 !important; margin-left: 10px; margin-top:10px !important;">SELECT BRANCH</span>
+<select style="color:black !important;" id="select-branch" class="select-branch" name="select-branch" onchange="handleBranchChange()">
+    <option value="" class="blank-branch" selected disabled>Choose a branch</option>
+    <?php $data = $block->getAllBranches(); ?>
+    <?php if (!empty($data)): ?>
+        <?php foreach ($data as $item): ?>
+            <option  data-branch-title="<?php echo $item['branch_title']; ?>" data-branch-key="<?php echo $item['branch_dealer_key']; ?>" value="<?php echo $item['branch_code']; ?>" class="terms"><?php echo $item['branch_title']; ?></option>
+        <?php endforeach; ?>
+    <?php endif; ?>
+        </select>
+
+
+<span class="span-select-term" style="color:#FFD700 !important; margin-left: 10px;  margin-top:10px !important;">SELECT TERM   </span>
+<select style="color:black !important;" id="select-terms"  class="select-terms" name="select-terms" >
+<option value="" class="blank-terms" selected disabled> Choose a terms</option>
+
+<?php $data = $block->getAllTerm();?>
+<?php if (!empty($data)): ?>
+
+        <?php foreach ($data as $item): ?>
+            <option value="<?php echo $item['term_months']; ?>" class="terms"> <?php echo $item['term_months']; ?> Months</option>
+        <?php endforeach; ?>
+
+<?php endif; ?>
+
+
+<input type="hidden" id="branch_company"  class="branch_company" name="branch_company" value="CICCLO SUERTE">
+
+
+
+
+
+</div>
+
+<?php
+$helper=$this->helper('Smartwave\Dailydeals\Helper\Data');
+
+$currency = $helper->getcurrencySymbol();
+
+?>
+<style>
+            .field.qty,
+            .action.primary.tocart {
+                display: none !important;
+             }
+        </style>
+
+<script type="text/javascript">
+require([
+    'jquery'
+], function ($) {
+    var $y= jQuery.noConflict();
+    var currencyValue= '<?php echo $currency ?>';
+    $y(document).ready(function() {
+
+
+            //Terms
+            $y("select[name=select-terms]").change(function() {
+                var selectedOption = $y(this).find('option:selected');
+                var terms = $('#select-terms').find(":selected").val();
+                var prices= $('.price').text();
+                var numberText = prices.replace('₱', '').replace(/,/g, '');
+                var numberValue = parseFloat(numberText);
+                var interest= 0.03;
+                var downpayment = 0;
+                var monthlyAmort = 0;
+                var interestRate = 0;
+                var accountFinance=0;
+                $('.td-terms').html(terms + ' Months');
+
+                if (numberValue < 89999) {
+                    downpayment = numberValue * 0.05;
+                    accountFinance =numberValue - downpayment
+                    interestRate=(interest * terms) + 1
+                    monthlyAmort=  (accountFinance *  interestRate) /terms;
+                    monthlyAmort = Math.round(monthlyAmort * 100) / 100;
+                    $('.td-downpayment').html(downpayment);
+                    $('.td-monthly').html(monthlyAmort);
+
+                } else if (numberValue < 178999) {
+                    downpayment = numberValue * 0.08;
+                    accountFinance =numberValue - downpayment
+                    interestRate=(interest *terms) + 1
+                    monthlyAmort=  (accountFinance *  interestRate) /terms;
+                    monthlyAmort = Math.round(monthlyAmort * 100) / 100;
+                    $('.td-downpayment').html(downpayment);
+                    $('.td-monthly').html(monthlyAmort);
+                } else {
+                    downpayment = numberValue * 0.10;
+                    accountFinance =numberValue - downpayment
+                    interestRate=(interest *terms) + 1
+                    monthlyAmort=  (accountFinance *  interestRate) /terms;
+                    monthlyAmort = Math.round(monthlyAmort * 100) / 100;
+                    $('.td-downpayment').html(downpayment);
+                    $('.td-monthly').html(monthlyAmort);
+                }
+                    document.cookie = 'myTerms=' +  terms + '; path=/';
+                    document.cookie = 'myDownpayment=' +  downpayment  + '; path=/';
+                    document.cookie = 'totalComputed=' +  monthlyAmort + '; path=/';
+
+
+                if(terms < 24 ){
+                    document.cookie = 'totalRebate=' + 200 + '; path=/';
+
+                }else if(terms < 36  ){
+                    document.cookie = 'totalRebate=' + 300 + '; path=/';
+                }else{
+                    document.cookie = 'totalRebate=' + 500 + '; path=/'
+                }
+
+
+
+
+
+
+                });
+
+            });
+
+
+    });
+
+
+</script>
+
+
+<?php endif; ?>
+<style>
+            .field.qty,
+            .action.primary.tocart {
+                display: none !important;
+             }
+        </style>
+<?php endif; ?>

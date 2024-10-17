@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Apply_Branches::branches" title="Branches" module="Apply_Branches" sortOrder="10" parent="Apply_Loans::loan_head" action="branches/branches" resource="Apply_Branches::branch" />
+    </menu>
+</config>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Customer_City::city" title="City" module="Customer_City" sortOrder="10" parent="Customer_Province::province_head" action="cities/cities" resource="Customer_City::city" />
+    </menu>
+</config>

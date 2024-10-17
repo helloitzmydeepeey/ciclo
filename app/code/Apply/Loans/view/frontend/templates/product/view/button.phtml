@@ -1,0 +1,189 @@
+<?php $progress = $block->getLayout()->createBlock(\Customer\Progress\Block\Progress::class); ?>
+<?php if ($block->isLoggedIn()): ?>
+    <?php $currentProduct = $block->getCurrentProduct(); ?>
+    <?php $categoryIds = $currentProduct->getCategoryIds(); ?>
+    <?php $productId = $currentProduct->getId(); ?>
+
+    <?php if (in_array(6, $categoryIds)): ?>
+        <script>
+            require(['jquery'], function($) {
+                $(document).ready(function() {
+                    $('#toloan-product-view-button').click(function() {
+                        var productId = $('.product-id-loan').val();
+                        // Check if progress is complete
+                        var progressPercentage = <?php echo $progress->getProgressPercentage(); ?>;
+                        if (progressPercentage < 100) {
+                            // Open the modal
+                            $('#myModals').css('display', 'block');
+                        } else {
+                            if (productId == null || productId.trim() === '') {
+                            alert('Please Choose At least 1 Color Swatch');
+                            }else{
+                            // Redirect to another page
+                            document.cookie = "product_id=" + productId + "; path=/";
+                            var saveUrl = '<?= $block->getUrl('loan/manage/save') ?>';
+                            window.location.href = saveUrl;
+                            }
+
+                        }
+                    });
+
+                    // Closes the modal when the closes button is clicked
+                    $('.closes').click(function() {
+                        $('#myModals').css('display', 'none');
+                    });
+
+                    // Closes the modal when the user clicks anywhere outside of it
+                    window.onclick = function(event) {
+                        if (event.target == document.getElementById('myModals')) {
+                            $('#myModals').css('display', 'none');
+                        }
+                    };
+
+                    // Redirect to the customer account when the OK button is clicked
+                    $('#modal-ok-buttons').click(function() {
+                        var customerAccountUrl = '<?= $block->getUrl('customer/account') ?>';
+                        window.location.href = customerAccountUrl;
+                    });
+                });
+            });
+        </script>
+
+        <style>
+            .field.qty,
+            .action.primary.tocart {
+                display: none !important;
+             }
+        </style>
+       <input type="hidden" class="product-id-loan">
+
+       <div class="container">
+            <div class="row">
+                <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+
+            <div class="row">
+                <div class="text-center">
+                    <h1>Computation</h1>
+                </div>
+                </span>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Terms</th>
+                            <th class="text-center">Downpayment Needed</th>
+
+                            <th class="text-center">Monthly Amortization</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td class="col-md-9 td-terms" id="td-terms"></td>
+                            <td class="col-md-1 td-downpayment" id="td-downpayment" style="text-align: center"> </td>
+                            <td class="col-md-1 text-center td-monthly" id="td-monthly"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+        <button class="action primary toloan" class="toloan-product-view-button" id="toloan-product-view-button">
+            <span><?= $block->escapeHtml(__('APPLY FOR A LOAN')) ?></span>
+        </button>
+
+        <div id="myModals" class="modals">
+            <div class="modal-contents">
+                <span class="closes">&times;</span>
+                <div id="modal-titles" data-role="title">
+                    Incomplete Account Information!
+                </div>
+                <div id="modal-messages" data-role="message">
+                    Please complete the account information before proceeding.
+                </div>
+                <div id="modal-actionss" class="actions-toolbar" data-role="actions">
+                    <div class="primary">
+                        <button id="modal-ok-buttons" class="action primary" type="button">
+                            <span>OK</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
+        <h5 style="color:red;">This product is not eligible for a loan.</h5>
+        <style>
+            .price-after-text {
+                display: none !important;
+            }
+        </style>
+    <?php endif; ?>
+<?php endif; ?>
+
+<style>
+.modals {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 437px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* background-color: rgba(0, 0, 0, 0.4); */
+}
+
+.modal-contents {
+    background-color: #f44336;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    color: white;
+    transition: 0.3s;
+    line-height: 20px;
+}
+
+.closes {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closes:hover,
+.closes:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modal-actionss .primary button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+    margin-left: 430px;
+}
+
+#modal-messages {
+    text-align: center;
+    font-size: 15px;
+}
+
+#modal-titles {
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+}
+</style>

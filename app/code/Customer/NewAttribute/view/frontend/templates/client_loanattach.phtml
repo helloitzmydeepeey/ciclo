@@ -1,0 +1,323 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+
+/** @var Customer\NewAttribute\Block\Dropdown $block */
+$clientMotorcycleLoanAttachmentFullName = $block->getMotorcycleLoanAttachmentFullName();
+$clientMotorcycleLoanAttachmentPhotoClient = $block->getMotorcycleLoanAttachmentPhotoClient();
+$clientMotorcycleLoanAttachmentIdentification = $block->getMotorcycleLoanAttachmentIdentification();
+$clientMotorcycleLoanAttachmentProofOfIncome = $block->getMotorcycleLoanAttachmentProofOfIncome();
+$getAvailmentPurposeOptions = $block->getAvailmentPurposeOptions();
+$getAvailmentPurposeValue= $block->getAvailmentPurposeValue();
+$getIdentificationIssuedDate=$block->getIdentificationIssuedDate();
+$getIdentificationExpiredDate=$block->getIdentificationExpiredDate();
+$clientMotorcycleLoanAttachmentPhotoClientRemarks = $block->getMotorcycleLoanAttachmentPhotoClientRemarks();
+$clientMotorcycleLoanAttachmentIdentificationRemarks = $block->getMotorcycleLoanAttachmentIdentificationRemarks();
+$clientMotorcycleLoanAttachmentProofOfIncomeRemarks = $block->getMotorcycleLoanAttachmentProofOfIncomeRemarks();
+$clientLeadSource= $block->getLeadSource();
+?>
+<style>
+.field {
+        margin-bottom: 2em;
+}
+.asterisk {
+        color: red;
+
+}
+span{
+    font-weight:600;
+}
+</style>
+
+
+
+<?php if ($customerSession->isLoggedIn()): ?>
+    <form action="<?= $block->getUrl('client/loanattach/save') ?>" method="post" class="form form-edit-account" enctype="multipart/form-data">
+        <?= $block->getBlockHtml('formkey') ?>
+        <legend class="legend" style="padding:0;border:0;color:#ec7200;text-transform:uppercase;margin:0 0 20px;font-size:16px;font-weight:400;"><span>Client Loan Attachment</span></legend>
+
+        <div class="field mc_loan_attachment_full_name required">
+            <label class="label" for="mc_loan_attachment_full_name">
+                <span><?= /* @noEscape */ __('Client Name Attachments'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input type="text" name="mc_loan_attachment_full_name" id="mc_loan_attachment_full_name"  oninput="this.value = this.value.toUpperCase();" value="<?= $clientMotorcycleLoanAttachmentFullName ?: '' ?>" >
+            </div>
+        </div>
+
+
+        <div class="field mc_loan_attachment_image_photo_client required">
+            <label class="label" for="mc_loan_attachment_image_photo_client">
+                <span><?= /* @noEscape */ __('Client Photo'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input name="mc_loan_attachment_image_photo_client" id="mc_loan_attachment_image_photo_client" title="UPLOAD FILE" class="input-text" type="file" >
+                <textarea id="mc_loan_attachment_image_photo_client_base64" name="mc_loan_attachment_image_photo_client_base64" rows="4" cols="50" style="display: none;" > <?= $clientMotorcycleLoanAttachmentPhotoClient ?: '' ?></textarea>
+                <div id="mc_loan_attachment_image_photo_client_message">
+                    <?php if(empty($clientMotorcycleLoanAttachmentPhotoClient)){
+                        echo "<p style='color:red;font-weight:700px;'> Please Input Your Photo. </p>";
+                    }else{
+                       echo '<img src="data:image/jpg;base64,'."$clientMotorcycleLoanAttachmentPhotoClient".'" />';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="field mc_loan_attachment_image_photo_client_remarks required">
+            <label class="label" for="mc_loan_attachment_image_photo_client_remarks">
+                <span></span>
+                <span class="asterisk"> </span>
+            </label>
+            <div class="control">
+                <input type="hidden" name="mc_loan_attachment_image_photo_client_remarks" id="mc_loan_attachment_image_photo_client_remarks"  value="<?= $clientMotorcycleLoanAttachmentPhotoClientRemarks ?: '' ?>" >
+            </div>
+        </div>
+
+        <hr>
+        <div class="field mc_loan_attachment_image_identification required">
+            <label class="label" for="mc_loan_attachment_image_identification">
+                <span><?= /* @noEscape */ __('Client Identification'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input name="mc_loan_attachment_image_identification" id="mc_loan_attachment_image_identification" title="UPLOAD FILE" class="input-text" type="file"  value="<?= $clientMotorcycleLoanAttachmentIdentification ?: '' ?>"  >
+                <textarea id="mc_loan_attachment_image_identification_base64" name="mc_loan_attachment_image_identification_base64" rows="4" cols="50" style="display: none;" > <?= $clientMotorcycleLoanAttachmentIdentification ?: '' ?></textarea>
+                <div id="mc_loan_attachment_image_identification_message">
+                    <?php if(empty($clientMotorcycleLoanAttachmentIdentification)){
+                        echo "<p style='color:red;font-weight:700px;'> Please Input Your Identification. </p>";
+                    }else{
+                        echo '<img src="data:image/jpg;base64,'."$clientMotorcycleLoanAttachmentIdentification".'" />';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="field mc_loan_attachment_image_identification_remarks required">
+            <label class="label" for="mc_loan_attachment_image_identification_remarks">
+                <span></span>
+                <span class="asterisk"></span>
+            </label>
+            <div class="control">
+                <input type="hidden" name="mc_loan_attachment_image_identification_remarks" id="mc_loan_attachment_image_identification_remarks"  value="<?= $clientMotorcycleLoanAttachmentIdentificationRemarks ?: '' ?>" required>
+            </div>
+        </div>
+
+
+
+
+        <div class="field mc_loan_attachment_issued_date required">
+                    <label class="label" for="mc_loan_attachment_issued_date">
+                        <span><?= /* @noEscape */ __('Identification Issued Date'); ?></span>
+                        <span class="asterisk">  </span>
+                    </label>
+                    <?php
+                    $identificationIssued = new \DateTime($getIdentificationIssuedDate);
+                    $identificationIssuedFormatted = $identificationIssued->format('Y-m-d');
+                        ?>
+            <div class="control">
+                <input type="hidden" class="date_text" id="date_text" value="<?= $getIdentificationIssuedDate ? date('Y/m/d', strtotime($getIdentificationIssuedDate)) : '' ?>" disabled>
+                <input type="date" name="mc_loan_attachment_issued_date" id="mc_loan_attachment_issued_date"  value="<?=  $identificationIssuedFormatted  ?: '' ?>" onchange="DateDrop(this)" required>
+            </div>
+        </div>
+
+        <div class="field mc_loan_attachment_expiration_date required">
+                    <label class="label" for="mc_loan_attachment_expiration_date">
+                        <span><?= /* @noEscape */ __('Identification Expiration Date'); ?></span>
+                        <span class="asterisk"> </span>
+                    </label>
+                    <?php
+                    $identificationExpired = new \DateTime($getIdentificationExpiredDate);
+                    $identificationExpiredFormatted = $identificationExpired->format('Y-m-d');
+                        ?>
+            <div class="control">
+                <input type="hidden" class="date_text" id="date_text" value="<?= $getIdentificationExpiredDate ? date('Y/m/d', strtotime($getIdentificationExpiredDate)) : '' ?>" disabled>
+                <input type="date" name="mc_loan_attachment_expiration_date" id="mc_loan_attachment_expiration_date"  value="<?=  $identificationExpiredFormatted ?: '' ?>" onchange="DateDrop(this)" required>
+            </div>
+        </div>
+
+
+        <hr>
+
+        <div class="field mc_loan_attachment_image_proof_of_income required">
+            <label class="label" for="mc_loan_attachment_image_proof_of_income">
+                <span><?= /* @noEscape */ __('Client Proof Of Income'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <input name="mc_loan_attachment_image_proof_of_income" id="mc_loan_attachment_image_proof_of_income" title="UPLOAD FILE" class="input-text" type="file"  value="<?= $clientMotorcycleLoanAttachmentProofOfIncome ?: '' ?>">
+                <textarea id="mc_loan_attachment_image_proof_of_income_base64" name="mc_loan_attachment_image_proof_of_income_base64"  rows="4" cols="50" style="display: none;"  ><?= $clientMotorcycleLoanAttachmentProofOfIncome ?: '' ?></textarea>
+                <div id="mc_loan_attachment_image_proof_of_income_message">
+                    <?php if(empty($clientMotorcycleLoanAttachmentProofOfIncome)){
+                        echo "<p style='color:red;font-weight:700px;'> Please Input Your Proof of Income. </p>";
+                    }else{
+                        echo '<img src="data:image/jpg;base64,'."$clientMotorcycleLoanAttachmentProofOfIncome".'" />';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="field mc_loan_attachment_image_proof_of_income_remarks required">
+            <label class="label" for="mc_loan_attachment_image_proof_of_income_remarks">
+                <span></span>
+                <span class="asterisk"></span>
+            </label>
+            <div class="control">
+                <input type="hidden" name="mc_loan_attachment_image_proof_of_income_remarks" id="mc_loan_attachment_image_proof_of_income_remarks"  value="<?= $clientMotorcycleLoanAttachmentProofOfIncomeRemarks ?: '' ?>" >
+            </div>
+        </div>
+        <input type="hidden" name="lead_source" id="lead_source"  value="<?= $clientLeadSource ?: '' ?>" >
+        <hr>
+
+        <div class="field availment_purpose required">
+            <label class="label" for="availment_purpose">
+                <span><?= /* @noEscape */ __('Availment Purpose'); ?></span>
+                <span class="asterisk"> * </span>
+            </label>
+            <div class="control">
+                <select name="availment_purpose" id="availment_purpose" required>
+                    <option value="" disabled selected>Please Select Availment Purpose</option>
+                    <?php foreach ($getAvailmentPurposeOptions as $option) : ?>
+                        <?php if ($option['value'] !== null && $option['value'] !== ""): ?>
+                            <option value="<?= $option['value'] ?>" <?= $option['value'] == $getAvailmentPurposeValue ? 'selected' : '' ?>>
+                                <?= $option['label'] ?>
+                            </option>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+
+
+        <button name='save-attach' id='save-attach' type="submit" disabled>Save</button>
+
+
+    </form>
+
+    <script>
+    function DateDrop(sel) {
+        var selValue = sel.value;
+        var dateInput = document.getElementById("date_text").value=selValue;
+
+
+    }
+    document.getElementById('mc_loan_attachment_image_photo_client').addEventListener('change', function() {
+          const file = this.files[0];
+          const fileType = file.type;
+          const fileSize = file.size;
+          const maxSize = 3024 * 3024;
+
+
+        if (fileSize > maxSize) {
+            alert('File size exceeds the allowed limit (1 MB).');
+            this.value = '';
+            return;
+        }
+          if (fileType !== 'image/jpeg') {
+            alert('Please select a .jpg file.');
+            this.value = '';
+            return;
+          }
+
+          const reader = new FileReader();
+          const dateNow = new Date().toISOString().replace(/[-:.]/g, '');
+          const fileName = dateNow + '-' + file.name;
+
+          reader.onload = function(event) {
+            const base64 = event.target.result.split(',')[1];
+            document.getElementById('mc_loan_attachment_image_photo_client_base64').value = base64;
+            // document.getElementById('mc_loan_attachment_image_photo_client_message').innerHTML = "<p style='color:green;font-weight:700px'> File uploaded. </p>";
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+
+
+        document.getElementById('mc_loan_attachment_image_identification').addEventListener('change', function() {
+          const file = this.files[0];
+          const fileType = file.type;
+          const fileSize = file.size;
+          const maxSize = 3024 * 3024;
+
+
+        if (fileSize > maxSize) {
+            alert('File size exceeds the allowed limit (1 MB).');
+            this.value = '';
+            return;
+        }
+
+          // Check if the file type is not 'image/jpeg' (i.e., not a .jpg file)
+          if (fileType !== 'image/jpeg') {
+            alert('Please select a .jpg file.');
+            this.value = '';
+            return;
+          }
+
+          const reader = new FileReader();
+          const dateNow = new Date().toISOString().replace(/[-:.]/g, '');
+          const fileName = dateNow + '-' + file.name;
+
+          reader.onload = function(event) {
+            const base64 = event.target.result.split(',')[1];
+            document.getElementById('mc_loan_attachment_image_identification_base64').value = base64;
+            // document.getElementById('mc_loan_attachment_image_identification_message').innerHTML = "<p style='color:green;font-weight:700px'> File uploaded. </p>";
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+
+        document.getElementById('mc_loan_attachment_image_proof_of_income').addEventListener('change', function() {
+          const file = this.files[0];
+          const fileType = file.type;
+          const fileSize = file.size;
+          const maxSize = 3024 * 3024;
+
+
+        if (fileSize > maxSize) {
+            alert('File size exceeds the allowed limit (1 MB).');
+            this.value = '';
+            return;
+        }
+
+          // Check if the file type is not 'image/jpeg' (i.e., not a .jpg file)
+          if (fileType !== 'image/jpeg') {
+            alert('Please select a .jpg file.');
+            this.value = '';
+            return;
+          }
+
+          const reader = new FileReader();
+          const dateNow = new Date().toISOString().replace(/[-:.]/g, '');
+          const fileName = dateNow + '-' + file.name;
+
+          reader.onload = function(event) {
+            const base64 = event.target.result.split(',')[1];
+            document.getElementById('mc_loan_attachment_image_proof_of_income_base64').value = base64;
+            document.getElementById("save-attach").disabled = false;
+            // document.getElementById('mc_loan_attachment_image_proof_of_income_message').innerHTML = "<p style='color:green;font-weight:700px'> File uploaded. </p>";
+          };
+
+          reader.readAsDataURL(file);
+
+        });
+
+
+  let x = document.getElementById("mc_loan_attachment_image_proof_of_income_base64").value;
+  if(x!==''){
+    document.getElementById("save-attach").disabled = false;
+  }else{
+    document.getElementById("save-attach").disabled = true;
+  }
+
+
+</script>
+
+
+
+<?php endif; ?>

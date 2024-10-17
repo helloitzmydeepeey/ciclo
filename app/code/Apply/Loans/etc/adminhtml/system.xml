@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="loan_extensions_tab" translate="label" sortOrder="402">
+            <label>Loan Extensions</label>
+        </tab>
+        <section id="loan_extensions" translate="label"  sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+           <label>Loan API Token</label>
+            <tab>loan_extensions_tab</tab>
+            <resource>Apply_Loans::loan_config</resource>
+            <group id="loan_api_token_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Loan API Token Request Config</label>
+                <field id="token_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1"  canRestore="1">
+                    <label>Token Endpoint URL</label>
+                    <comment>Please Add Token Endpoint URL this field is for requesting token</comment>
+                </field>
+                <field id="token_api_username" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1"  canRestore="1">
+                    <label>API Username</label>
+                    <comment>Please Add Api Username this field is for requesting token</comment>
+                </field>
+                <field id="token_api_password" translate="label" type="password" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1"  canRestore="1">
+                    <label>API Password</label>
+                    <comment>Please Add Api Password this field is for requesting token</comment>
+                </field>
+            </group>
+             <group id="loan_send_api_request" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+              <label>Loan Request Url</label>
+                <field id="loan_request_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1"  canRestore="1">
+                    <label>Loan Request URL</label>
+                    <comment>Please Add Loan Request URL; this field is for sending loan API requests</comment>
+                </field>
+            </group>
+        </section>
+
+       <section id="loan_emails" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Loan Email</label>
+            <tab>loan_extensions_tab</tab>
+            <resource>Apply_Loans::loan_config</resource>
+            <group id="loans_confirmation" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Loans Confirmation Email</label>
+                <field id="enabled_loans" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity_loans" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Confirmation Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template_loans" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Confirmation Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="copy_to_loans" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Loan Email Copy To</label>
+                    <comment>Comma-separated.</comment>
+                    <validate>validate-emails</validate>
+                </field>
+                <field id="copy_method_loans" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Loan Email Copy Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Method</source_model>
+                </field>
+            </group>
+            <group id="loans_canceled" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Loans Canceled Email</label>
+                <field id="enabled_loans_canceled" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity_loans_canceled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Canceled Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template_loans_canceled" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Canceled Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="template_loans_admin_canceled" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Canceled Admin Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="copy_to_loans_canceled" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Loan Email Copy To</label>
+                    <comment>Comma-separated.</comment>
+                    <validate>validate-emails</validate>
+                </field>
+                <field id="copy_method_loans_canceled" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Loan Email Copy Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Method</source_model>
+                </field>
+            </group>
+            <group id="loans_admin_processing" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Loans Admin Processing Email</label>
+                <field id="enabled_loans_admin_processing" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity_loans_admin_processing" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Admin Processing Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template_loans_admin_processing" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Admin Processing Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="copy_to_loans_admin_processing" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Loan Email Copy To</label>
+                    <comment>Comma-separated.</comment>
+                    <validate>validate-emails</validate>
+                </field>
+                <field id="copy_method_loans_admin_processing" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Loan Email Copy Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Method</source_model>
+                </field>
+            </group>
+
+            <group id="loans_admin_rejected" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Loans Admin Rejected Email</label>
+                <field id="enabled_loans_admin_rejected" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity_loans_admin_rejected" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Admin Rejected Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template_loans_admin_rejected" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Admin Rejected Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="copy_to_loans_admin_rejected" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Loan Email Copy To</label>
+                    <comment>Comma-separated.</comment>
+                    <validate>validate-emails</validate>
+                </field>
+                <field id="copy_method_loans_admin_rejected" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Loan Email Copy Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Method</source_model>
+                </field>
+            </group>
+
+            <group id="loans_admin_approved" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Loans Admin Approved Email</label>
+                <field id="enabled_loans_admin_approved" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity_loans_admin_approved" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Admin Approved Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="template_loans_admin_approved" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>New Loan Admin Approved Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="copy_to_loans_admin_approved" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Loan Email Copy To</label>
+                    <comment>Comma-separated.</comment>
+                    <validate>validate-emails</validate>
+                </field>
+                <field id="copy_method_loans_admin_approved" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Loan Email Copy Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Method</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

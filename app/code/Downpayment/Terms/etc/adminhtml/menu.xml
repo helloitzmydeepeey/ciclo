@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Downpayment_Terms::term_head" title="Downpayment" module="Downpayment_Terms" sortOrder="100" parent="Magento_Backend::content" resource="Downpayment_Terms::term_head" />
+        <add id="Downpayment_Terms::term" title="Terms" module="Downpayment_Terms" sortOrder="10" parent="Downpayment_Terms::term_head" action="terms/term" resource="Downpayment_Terms::term" />
+    </menu>
+</config>

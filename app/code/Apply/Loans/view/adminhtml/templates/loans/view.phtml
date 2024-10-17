@@ -1,0 +1,191 @@
+<?php
+/** @var \Apply\Loans\Block\Adminhtml\Loans\View $block */
+$customerID = $block->getLoan()->getCustomerEntityId();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerRepository = $objectManager->get(\Magento\Customer\Api\CustomerRepositoryInterface::class);
+$customer = $customerRepository->getById($customerID);
+$billingAddressId = $customer->getDefaultBilling();
+$shippingAddressId = $customer->getDefaultShipping();
+$addressRepository = $objectManager->get(\Magento\Customer\Api\AddressRepositoryInterface::class);
+$billingAddress = $addressRepository->getById($billingAddressId);
+$shippingAddress = $addressRepository->getById($shippingAddressId);
+?>
+
+<section class="admin__page-section order-view-account-information">
+<div class="page-main-actions">
+    <div class="page-actions-placeholder">
+
+    </div>
+    <div class="page-actions" data-ui-id="page-actions-toolbar-content-header">
+        <div class="page-actions-inner" data-title="Footer">
+            <div class="page-actions-buttons">
+
+        <div title="Save" class="actions-split save primary">
+
+                <ul class="dropdown-menu" data-ui-id="save-button-dropdown-menu">
+                        <li>
+
+                    </li>
+
+                        </ul>
+
+
+
+            </div></div></div>
+        </div>
+        <div class="actions">
+                    <button id="export-button" style="float:right;" class="action-default scalable" onclick="exportLoanData()">Export Loan Data</button>
+                </div>
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Loan & Account Information')) ?></span>
+        </div>
+
+        <h1>Loan Entity ID: <?= $block->escapeHtml($block->getLoan()->getId()) ?></h1>
+        <?php /* Loan Information */ ?>
+        <div class="admin__page-section-item-title">
+            <span class="title"></span>
+        </div>
+        <div class="admin__page-section-item-content">
+            <table class="admin__table-secondary order-information-table">
+                <tr>
+                    <th><?= $block->escapeHtml(__('Loan Date')) ?></th>
+                    <td><?= $block->escapeHtml($block->getLoan()->getCreatedAt()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Loan Dealer Branch Title')) ?></th>
+                    <td><?= $block->escapeHtml($block->getLoan()->getLoanDealerBranchTitle()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Loan Dealer Branch Code')) ?></th>
+                    <td><?= $block->escapeHtml($block->getLoan()->getLoanDealerBranchCode()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Loan Dealer Branch Company')) ?></th>
+                    <td><?= $block->escapeHtml($block->getLoan()->getLoanDealerBranchCompany()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Loan Customer ID')) ?></th>
+                    <td><?= $customerID ?></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="admin__page-section-item order-account-information">
+    <?php /* Account Information */ ?>
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= $block->escapeHtml(__('Account Information')) ?></span>
+        <div class="actions">
+        </div>
+    </div>
+        <div class="admin__page-section-item-content">
+                <table class="admin__table-secondary order-account-information-table">
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Customer Name')) ?></th>
+                        <td>
+                            <?php
+                            $customerId = $block->getLoan()->getCustomerEntityId();
+                            $customer = $block->getCustomerById($customerId);
+                            $customerEmail= $block->getEmail();
+                            $customerName = $customer->getFirstname() . ' ' . $customer->getLastname();
+                            ?>
+                            <span><?= $block->escapeHtml($customerName) ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Email')) ?></th>
+                        <td><a href="mailto:<?=$customerEmail ?>"><?= $customer->getEmail() ?></a></td>
+                    </tr>
+                    <?php if ($groupName = $block->getCustomerGroupName()) : ?>
+                        <tr>
+                            <th><?= $block->escapeHtml(__('Customer Group')) ?></th>
+                            <td><?= $block->escapeHtml($groupName) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?= $block->getChildHtml('extra_customer_info') ?>
+                </table>
+            </div>
+        </div>
+</section>
+    <br>
+    <br>
+        <section class="admin__page-section order-addresses">
+            <div class="admin__page-section-title">
+                <span class="title"><?= $block->escapeHtml(__('Address Information')) ?></span>
+            </div>
+            <div class="admin__page-section-content">
+                <div class="admin__page-section-item order-billing-address">
+                    <?php /* Client Address Permanent */ ?>
+                    <div class="admin__page-section-item-title">
+                        <span class="title"><?= $block->escapeHtml(__('Client Address Permanent')) ?></span>
+                    </div>
+                    <?php if ($billingAddress !== null) : ?>
+                        <address class="admin__page-section-item-content"><?= $block->escapeHtml($block->getFormattedAddress($billingAddress)); ?></address>
+                    <?php else : ?>
+                        <p>No client address found for the customer.</p>
+                    <?php endif; ?>
+                </div>
+                <?php if ($shippingAddress !== null) : ?>
+                    <div class="admin__page-section-item order-shipping-address">
+                        <?php /* Client Address Current */ ?>
+                        <div class="admin__page-section-item-title">
+            <span class="title"><?= $block->escapeHtml(__('Client Address Current')) ?></span>
+            <div class="actions"><?= /* @noEscape */ $block->getAddressEditLink($shippingAddress); ?></div>
+                </div>
+                        <address class="admin__page-section-item-content"><?= $block->escapeHtml($block->getFormattedAddress($shippingAddress)); ?></address>
+                    </div>
+                <?php endif; ?>
+            </div>
+      </section>
+
+
+
+
+      <div class="admin__table-wrapper">
+    <table class="data-table admin__table-primary edit-order-table">
+        <thead>
+            <tr class="headings">
+
+             <th> Motorcycle Brand </th>
+             <th> Motorcycle Model </th>
+             <th> Motorcycle Price </th>
+             <th> Motorcycle Downpayment </th>
+             <th> Motorcycle Terms </th>
+             <th> Motorcycle Amortization </th>
+            </tr>
+        </thead>
+            <tbody>
+            <td><?= $block->escapeHtml($block->getLoan()->getMotorcycleBrand()) ?> </td>
+            <td><?= $block->escapeHtml($block->getLoan()->getMotorcycleModel()) ?> </td>
+            <td><?= number_format($block->escapeHtml($block->getLoan()->getMotorcyclePrice()), 2, '.', ',') ?> </td>
+            <td><?= number_format($block->escapeHtml($block->getLoan()->getLoanDownpayment()), 2, '.', ',') ?>  </td>
+            <td><?= $block->escapeHtml($block->getLoan()->getLoanTerm()) ?> Months </td>
+            <td><?= number_format($block->getLoan()->getLoanAmortization(), 2, '.', ',') ?></td>
+            </tbody>
+
+    </table>
+</div>
+
+
+<script>
+    function exportLoanData() {
+        // Gather the necessary data from the page
+        const data = [
+            ["Loan Date", "Loan Dealer Branch Title", "Loan Dealer Branch Code", "Loan Dealer Branch Company", "Loan Customer ID", "Customer Name", "Email", "Motorcycle Brand", "Motorcycle Model", "Motorcycle Price", "Motorcycle Downpayment", "Motorcycle Terms", "Motorcycle Amortization"],
+            ["<?= $block->escapeJs($block->getLoan()->getCreatedAt()) ?>", "<?= $block->escapeJs($block->getLoan()->getLoanDealerBranchTitle()) ?>", "<?= $block->escapeJs($block->getLoan()->getLoanDealerBranchCode()) ?>", "<?= $block->escapeJs($block->getLoan()->getLoanDealerBranchCompany()) ?>", "<?= $block->escapeJs($customerID) ?>", "<?= $block->escapeJs($customerName) ?>", "<?= $block->escapeJs($customerEmail) ?>", "<?= $block->escapeJs($block->getLoan()->getMotorcycleBrand()) ?>", "<?= $block->escapeJs($block->getLoan()->getMotorcycleModel()) ?>", "<?= $block->escapeJs($block->getLoan()->getMotorcyclePrice()) ?>", "<?= $block->escapeJs($block->getLoan()->getLoanDownpayment()) ?>", "<?= $block->escapeJs($block->getLoan()->getLoanTerm()) ?> Months", "<?= $block->escapeJs($block->getLoan()->getLoanAmortization()) ?>"],
+        ];
+
+        // Combine the data into a single CSV string with a horizontal layout using comma delimiter
+        const csvContent = data.map(row => row.join(",")).join("\n");
+
+        // Create a Blob with the CSV content
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        // Create a temporary anchor element to trigger the download
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'loan_data.csv';
+        link.click();
+    }
+</script>
+
